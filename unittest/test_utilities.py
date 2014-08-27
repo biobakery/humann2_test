@@ -1,6 +1,6 @@
-import unittest, importlib, os
+import unittest, importlib, os, filecmp
 
-import config
+import config, utils
 
 class TestHumann2UtilitiesFunctions(unittest.TestCase):
     """
@@ -36,4 +36,19 @@ class TestHumann2UtilitiesFunctions(unittest.TestCase):
             float(config.small_fastq_file_total_sequences)*100)
 
         self.assertEqual(percent_unaligned, str(percent_expected))   
-               
+
+    def test_break_up_fasta_file(self):
+        new_fasta_files=self.utilities.break_up_fasta_file(
+            config.small_fasta_file,1)
+
+        for file in new_fasta_files:
+            sequence_count=self.utilities.count_reads(file)
+            self.assertEqual(sequence_count,1)
+            utils.remove_temp_file(file) 
+
+    def test_fastq_to_fasta(self):
+        new_fasta_file=self.utilities.fastq_to_fasta(
+            config.convert_fastq_file)
+        self.assertTrue(filecmp.cmp(new_fasta_file,
+            config.convert_fasta_file, shallow=False))
+        utils.remove_temp_file(new_fasta_file)                    

@@ -2,6 +2,8 @@
 
 import os, sys, argparse, unittest, importlib
 
+import config
+
 def parse_arguments (args):
     """
     Parse the arguments from the user
@@ -35,6 +37,7 @@ def main():
     verbosity_setting=1
     if args.verbose:
         verbosity_setting=2
+        config.verbose=True
 
     directory_of_tests=os.path.dirname(os.path.realpath(__file__))
     
