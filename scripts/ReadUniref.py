@@ -43,11 +43,19 @@ import tempfile
 #  sequentially the mcc file and tries to convert each one of the Uniprot mappings to       *
 #  the corresponding Uniref entry                                                           *
 #  Logic of the Load of the table:                                                          *
-#  The program creates a temporary directory and gunzips the input translation files        *
+#  ------------------------------                                                           *
+#  First,  the program reads the mcc file and loads a list of all the Uniprot IDs in the    *
+#  file,  then it gets rids of duplicates by creating a SET of these Uniprot IDs            *
+#                                                                                           *
+#  Then the program creates a temporary directory and gunzips the input translation files   *
 #  (sys.argv[1] and sys.argv[2])                                                            *
 #  It then pastes the two of them together (In the temporary directory) and reads the       *
-#  pasted file, uploading each of the Uniprot IDs as a key to the dictionary  with the      *
-#  corresponding Uniref50 and 90 entries as a list in that dictionary entry                 *
+#  pasted file.                                                                             *
+#  It then checks the UniprotId (first field in that file ) against the SET of Uniprot      *
+#  IDs that came out the mcc - if it is there, it uploads the ID into the dictionary        *
+#  otherwise,  there is no need to have it as there is no reference in the mcc              *
+#  Each entry in the dictionary contains:                                                   *
+#  UniprotID (This is the key)  and a list of 2 entries:U50 and U90                         *
 #                                                                                           *
 #  After the dictionary is built,  the temporary directory is deleted and we read the       *
 #  mcc file looking for the uniprot id key in the dictionary and retrieving the             *
@@ -69,13 +77,20 @@ import tempfile
 #********************************************************************************************
 #*   Read Uniref 5090 file  and build translation table                                     *
 #********************************************************************************************
-def ReadUniref5090File(strInput5090):
+def ReadUniref5090File(strInput5090,sUniprotIds):
 	dUniprotUniref = dict()
 	iTotalUniref5090RecsLoaded = 0							# Counter of Uniref5090 recs loaded
-	iPrintAfter = 1000000										# Print status after multiple of these records
+	iTotalUniref5090RecsRead = 0							# Counter of Uniref5090 recs Read
+	iPrintAfter = 1000000									# Print status after multiple of these number of records
+	iPrintAfterReads = 100000  								# Print status after read of these number of records
 	File5090 = open(strInput5090)							# Open the file
 	for strInputLine in File5090:   						# Read Input file
+		iTotalUniref5090RecsRead+=1							# Count the reads
+		if  iTotalUniref5090RecsRead %  iPrintAfterReads == 0:	# If we need to print status
+			print "Total of ", iTotalUniref5090RecsRead, " Uniref5090 records read"
 		lInputLineSplit = strInputLine.split() 				# Split the line using space as delimiter
+		if lInputLineSplit[0]  not in sUniprotIds:			# If we don't need this ID 
+			continue										# skip it 
 		lEnt5090 = list()									# Initialize list
 		lEnt5090.append(lInputLineSplit[1].split("_")[1])	# Entry is of the form UniRef50_Q2FWP1 - We need only the Q2FWP1
 		lEnt5090.append(lInputLineSplit[3].split("_")[1])	# Entry is of the form UniRef50_Q2FWP1 - We need only the Q2FWP1
@@ -83,9 +98,6 @@ def ReadUniref5090File(strInput5090):
 		iTotalUniref5090RecsLoaded+=1						# Increase counter
 		if  iTotalUniref5090RecsLoaded %  iPrintAfter == 0:	# If we need to print status
 			print "Total of ", iTotalUniref5090RecsLoaded, " Uniref5090 records loaded into the table"
-		#if  iTotalUniref5090RecsLoaded > 40000000:				#Just for debug......
-			#print "Dummy Load Complete - Total of ", iTotalUniref5090RecsLoaded, " Uniref5090 records loaded into the table"
-			#return dUniprotUniref
 	print "Load Complete - Total of ", iTotalUniref5090RecsLoaded, " Uniref5090 records loaded into the table"
 	File5090.close()										# CLose the file
 	return dUniprotUniref
@@ -156,7 +168,23 @@ def InitializeProcess(strUniref50gz,  strUniref90gz):
 	dInputFiles["File5090"] = strTempDir + "/" + strUniref50gz[:-3] +  "90"  #Post the file created into the Common Area
 	return dInputFiles
  
- 
+#********************************************************************************************
+#*   Gather needed Uniprot Ids -                                                            *
+#*   Read mcc and load a table with the Uniprot Ids that are needed - we dont need all      *
+#********************************************************************************************
+def  GatherNeededUniprotIDs(strInputmcc):
+	lUniprotIds = list()									# Initialize table
+	FileMCC =  open(strInputmcc)							# Open MCC file
+	for strInputMCCLine in FileMCC:   						# Read Input MCC file
+		lInputMCCLineSplit = strInputMCCLine.split() 		# Split the line using space as delimiter
+		iStartOfUniprotIds = 1								# In most cases it will be 2, but we initialize to 1 and if there is an EC we set to 2			
+		if  lInputMCCLineSplit[1].startswith("EC-"):		# If there is an EC number
+			iStartOfUniprotIds = 2							# The start of Uniprot IDs is 2
+		for  iIndx  in range(iStartOfUniprotIds,len(lInputMCCLineSplit)):
+			lUniprotIds.append(lInputMCCLineSplit[iIndx])	# Add the ID to the table
+	FileMCC.close()		
+	sUnuprotIds = set(lUniprotIds)							# Remove dups
+	return sUnuprotIds
  
 #********************************************************************************************
 #* Main                                                                                     *
@@ -164,14 +192,18 @@ def InitializeProcess(strUniref50gz,  strUniref90gz):
 print "Program Started"
 strUniref50gz = sys.argv[1]					# The first file is the zipped version of the Uniref50 Translation file
 strUniref90gz = sys.argv[2]					# The 2nd file is the zipped version of the Uniref90 Translation file
-dInputFiles =  InitializeProcess(strUniref50gz,  strUniref90gz)  # Invoke initialization
-
-strInput5090 =  dInputFiles["File5090"]		#Name of the Uniref5090 file
 strInputmcc =  sys.argv[3]					#Name if mcc file
 OutputFileName = sys.argv[4]				#Name of the output file
+
+
+sUniprotIds = GatherNeededUniprotIDs(strInputmcc)  # Collect the needed Uniprot IDs - not need to load all
+dInputFiles =  InitializeProcess(strUniref50gz,  strUniref90gz)  # Invoke initialization
+strInput5090 =  dInputFiles["File5090"]		#Name of the Uniref5090 file
+
+
 OutputFile = open(OutputFileName,'w')		#Open the Output file
 print "Starting the load of the table\n"
-dUniprotUniref = ReadUniref5090File(strInput5090)	#Invoke reading of the file
+dUniprotUniref = ReadUniref5090File(strInput5090,sUniprotIds)	#Invoke reading of the file
 print "Completed the load of the table\n"
  
 cmd_remove_tempdir = "rm -r /" + dInputFiles["TempDirName"]		# Remove the temporary directory
