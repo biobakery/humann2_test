@@ -131,7 +131,7 @@ def ProcessMCCFile(strInputmcc,  dUniprotUniref):
 				lRebuiltRecord.append("UniRef50_" + lTranslations5090[0])	# Adding the translated entry for Uniref50
 				lRebuiltRecord.append("UniRef90_" + lTranslations5090[1])	# Adding the translated entry for Uniref90
 		lRebuiltRecord.append("\n")										# Add Line end delimiter
-		strRebuiltRecord = " ".join(lRebuiltRecord)						# And after finished with all entries, rebuild the record
+		strRebuiltRecord = "\t".join(lRebuiltRecord)						# And after finished with all entries, rebuild the record
 		OutputFile.write(strRebuiltRecord) 	 							#  write it
 		iTotalMCCRecordsProcessed+=1									# Add to the counter of MCC records processed
 		if  iTotalMCCRecordsProcessed %  iPrintAfterMCCProcessed == 0:	# If we need to print status
@@ -195,6 +195,8 @@ strUniref90gz = sys.argv[2]					# The 2nd file is the zipped version of the Unir
 strInputmcc =  sys.argv[3]					#Name if mcc file
 OutputFileName = sys.argv[4]				#Name of the output file
 
+strUniref50gz = os.path.split(strUniref50gz)[1]  # Take the filename only,  just in case the User provided an absolute path
+strUniref90gz = os.path.split(strUniref90gz)[1]  # Take the filename only,  just in case the User provided an absolute path
 
 sUniprotIds = GatherNeededUniprotIDs(strInputmcc)  # Collect the needed Uniprot IDs - not need to load all
 dInputFiles =  InitializeProcess(strUniref50gz,  strUniref90gz)  # Invoke initialization
