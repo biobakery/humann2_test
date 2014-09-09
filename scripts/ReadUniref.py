@@ -132,8 +132,9 @@ def ProcessMCCFile(strInputmcc,  dUniprotUniref):
 				lRebuiltRecord.append("UniRef90_" + lTranslations5090[1])	# Adding the translated entry for Uniref90
 		lRebuiltRecord.append("\n")										# Add Line end delimiter
 		strRebuiltRecord = "\t".join(lRebuiltRecord)						# And after finished with all entries, rebuild the record
-		OutputFile.write(strRebuiltRecord) 	 							#  write it
-		iTotalMCCRecordsProcessed+=1									# Add to the counter of MCC records processed
+		if len(strRebuiltRecord) > 0:									# Write it only if the record length > 0
+			OutputFile.write(strRebuiltRecord) 	 							#  write it
+			iTotalMCCRecordsProcessed+=1									# Add to the counter of MCC records processed
 		if  iTotalMCCRecordsProcessed %  iPrintAfterMCCProcessed == 0:	# If we need to print status
 			print "Total of ", iTotalMCCRecordsProcessed, " MCC records processed and a total of ", iTotalTranslationsFound , " Successful Translations"
 	FileMCC.close()														# Close MCC file
