@@ -1,10 +1,10 @@
 
 import os
 
-import config
+import cfg
 
 def remove_temp_file(file):
-    if config.verbose:
-        print "\nRemove temp file: " + file
+    #if cfg.verbose:
+    #    print "\nRemove temp file: " + file
     os.remove(file)
 
