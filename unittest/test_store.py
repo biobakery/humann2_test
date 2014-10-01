@@ -90,8 +90,8 @@ class TestHumann2StoreFunctions(unittest.TestCase):
             
         # check that the reactions list for each pathway is identical
         for pathway in pathway_list:
-            self.assertEqual(pathways_database_store.find_reactions(pathway),
-                pathways_database_flat_store.find_reactions(pathway))
+            self.assertEqual(sorted(pathways_database_store.find_reactions(pathway)),
+                sorted(pathways_database_flat_store.find_reactions(pathway)))
         
         # check for the same number of reactions
         self.assertEqual(len(pathways_database_store.reaction_list()), 
@@ -133,7 +133,147 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         
         # check that the reactions list for each pathway is identical
         for pathway in pathway_list:
-            self.assertEqual(pathways_database_flat_store_write.find_reactions(pathway),
-                pathways_database_flat_store.find_reactions(pathway))
+            self.assertEqual(sorted(pathways_database_flat_store_write.find_reactions(pathway)),
+                sorted(pathways_database_flat_store.find_reactions(pathway)))
+            
+    def test_ReactionsDatabase_read(self):
+        """
+        Reactions Database class: Test the storing of reactions
+        """
         
+        reactions_database_store=store.ReactionsDatabase(cfg.reactions_file)
+        
+        # read in the reactions directly from the file
+        file_handle=open(cfg.reactions_file)
+        
+        reactions={}
+        for line in file_handle:
+            data=line.strip().split("\t")
+            reactions[data[0]]=data[2:]
+        file_handle.close()
+        
+        # test for the same number of reactions
+        self.assertEqual(len(reactions.keys()), len(reactions_database_store.reaction_list()))
+        
+        # test for the same reactions and genes
+        for rxn in reactions:
+            self.assertEqual(reactions[rxn],reactions_database_store.find_genes(rxn))
+            
+    def test_PathwaysAndReactions_median_score(self):
+        """
+        Pathways and Reactions class: Test add and median score
+        """
+        
+        pathways_and_reactions=store.PathwaysAndReactions("bug")
+        
+        # add scores all for same pathway and different reaction
+        pathways_and_reactions.add("P1","R1",1)
+        pathways_and_reactions.add("P1","R2",2)        
+        pathways_and_reactions.add("P1","R3",3)
+        pathways_and_reactions.add("P1","R4",4)
+        pathways_and_reactions.add("P1","R5",5)  
+        
+        # test median score for odd number of values
+        self.assertEqual(pathways_and_reactions.median_score(),3)
+        
+        pathways_and_reactions=store.PathwaysAndReactions("bug")
+        
+        # add scores all for same pathway and  different reaction
+        pathways_and_reactions.add("P1","R1",1)
+        pathways_and_reactions.add("P1","R2",2)        
+        pathways_and_reactions.add("P1","R3",3)
+        pathways_and_reactions.add("P1","R4",4) 
+        
+        # test median score for an even number of values
+        self.assertEqual(pathways_and_reactions.median_score(),2.5)  
+        
+        # repeat tests with different pathways and same reactions
+        
+        pathways_and_reactions=store.PathwaysAndReactions("bug")        
+        
+        # add scores all for same pathway and reaction
+        pathways_and_reactions.add("P1","R1",1)
+        pathways_and_reactions.add("P2","R1",2)        
+        pathways_and_reactions.add("P3","R1",3)
+        pathways_and_reactions.add("P4","R1",4)
+        pathways_and_reactions.add("P5","R1",5)  
+        
+        # test median score for odd number of values
+        self.assertEqual(pathways_and_reactions.median_score(),3)
+        
+        pathways_and_reactions=store.PathwaysAndReactions("bug")
+        
+        # add scores all for same pathway and reaction
+        pathways_and_reactions.add("P1","R1",1)
+        pathways_and_reactions.add("P2","R2",2)        
+        pathways_and_reactions.add("P3","R3",3)
+        pathways_and_reactions.add("P4","R4",4) 
+        
+        # test median score for an even number of values
+        self.assertEqual(pathways_and_reactions.median_score(),2.5)   
+        
+    def test_Alignments_add(self):
+        """
+        Alignments class: Test add function
+        """             
+        
+        alignments_store=store.Alignments()
+        
+        alignments_store.add("gene2", "Q3", 0.01, "bug1")
+        alignments_store.add("gene1", "Q1", 0.01, "bug2")
+        alignments_store.add("gene3", "Q2", 0.01, "bug3")
+        alignments_store.add("gene1", "Q1", 0.01, "bug1")
+        
+        # check the total bugs
+        self.assertEqual(alignments_store.count_bugs(),3)
+        
+        # check the total genes
+        self.assertEqual(alignments_store.count_genes(),3)
+        
+        # check bug list
+        self.assertEqual(sorted(alignments_store.bug_list()),["bug1","bug2","bug3"])
+        
+        # check gene list
+        self.assertEqual(sorted(alignments_store.gene_list()),["gene1","gene2","gene3"])
+        
+    def test_Alignments_delete(self):
+        """
+        Alignments class: Test delete function
+        """
+        
+        alignments_store=store.Alignments()
+        
+        alignments_store.add("gene2", "Q3", 0.01, "bug1")
+        alignments_store.add("gene1", "Q1", 0.01, "bug2")
+        alignments_store.add("gene3", "Q2", 0.01, "bug3")
+        alignments_store.add("gene1", "Q1", 0.01, "bug1")
+        
+        # delete hits associated with gene
+        alignments_store.delete_gene_and_hits("gene1")   
+        alignments_store.update_hits_for_bugs()
+        
+        # check the total bugs
+        self.assertEqual(alignments_store.count_bugs(),2)
+        
+        # check the total genes
+        self.assertEqual(alignments_store.count_genes(),2)
+        
+        # check bug list
+        self.assertEqual(sorted(alignments_store.bug_list()),["bug1","bug3"])
+        
+        # check gene list
+        self.assertEqual(sorted(alignments_store.gene_list()),["gene2","gene3"])
+        
+        # check the remaining hits for each gene
+        self.assertEqual(sorted(alignments_store.hits_for_gene("gene2")[0]),
+            sorted(["gene2", "Q3", 0.01, "bug1"]))
+        self.assertEqual(sorted(alignments_store.hits_for_gene("gene3")[0]),
+            sorted(["gene3", "Q2", 0.01, "bug3"]))
+        
+        # check the remaining hits for each bug
+        self.assertEqual(sorted(alignments_store.hits_for_bug("bug1")[0]),
+            sorted(["gene2", "Q3", 0.01, "bug1"]))
+        self.assertEqual(sorted(alignments_store.hits_for_bug("bug3")[0]),
+            sorted(["gene3", "Q2", 0.01, "bug3"]))        
+              
 

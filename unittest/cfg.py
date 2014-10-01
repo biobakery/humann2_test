@@ -18,3 +18,5 @@ small_fasta_file_single_line_sequences=os.path.join(data_folder,"file_single_lin
 pathways_file=os.path.join(data_folder, "pathways.tsv")
 pathways_flat_file=os.path.join(data_folder, "pathways_flat.tsv")
 
+reactions_file=os.path.join(data_folder, "reactions.tsv")
+
