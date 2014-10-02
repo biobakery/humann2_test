@@ -60,8 +60,11 @@ def main():
 
     directory_of_tests=os.path.dirname(os.path.realpath(__file__))
     
-    suite = unittest.TestLoader().discover(directory_of_tests,pattern='test_*.py')
-    unittest.TextTestRunner(verbosity=verbosity_setting).run(suite)
+    basic_suite = unittest.TestLoader().discover(directory_of_tests,pattern='basic_tests_*.py')
+    advanced_suite = unittest.TestLoader().discover(directory_of_tests, pattern='advanced_tests_*.py')
+    full_suite = unittest.TestSuite([basic_suite,advanced_suite])
+    
+    unittest.TextTestRunner(verbosity=verbosity_setting).run(full_suite)
 
 if __name__ == '__main__':
     main()

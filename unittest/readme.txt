@@ -26,5 +26,5 @@ Ran 3 tests in 0.024s
 OK
 
 The unittests are written using the simple test discovery framework added in python v2.7. 
-To add new unittests to the test suite place them in a new file named 'test_*.py' containing 
-a test class and functions as was done in module test_utilities.  
+To add new unittests to the test suite place them in a new file named '[basic|advanced]_tests_*.py' containing 
+a test class and functions as was done in module basic_tests_utilities.  

@@ -1,0 +1,15 @@
+#Gene Family	Hits
+gene1	4
+gene1|bug1	2
+gene1|unclassified	1
+gene1|bug2	1
+gene2	3
+gene2|unclassified	1
+gene2|bug3	1
+gene2|bug1	1
+gene3	1
+gene3|bug1	1
+gene4	1
+gene4|bug1	1
+gene5	1
+gene5|bug2	1

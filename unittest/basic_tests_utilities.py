@@ -18,7 +18,7 @@ class TestHumann2UtilitiesFunctions(unittest.TestCase):
         Test the file_exists_readable function
         """
         
-        utilities.file_exists_readable(os.path.basename(__file__))
+        utilities.file_exists_readable(cfg.small_fasta_file)
 
     def test_count_reads(self):
         """
