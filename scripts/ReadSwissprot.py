@@ -3,14 +3,11 @@ from cStringIO import StringIO
 import sys,string
 import sys, os
 import argparse
-from subprocess import call
-
-
 
 
 
 #********************************************************************************************
-#    Read Swissprot gram                                                                    *
+#    Read Swissprot program                                                                 *
 #    This program reads the unprot.dat file and creates an                                  *
 #    extract containing in each line                                                        *
 #    The Protein AC and all the ECs related to it                                           *
@@ -20,6 +17,14 @@ from subprocess import call
 #  ---------------------                                                                    *
 #   python ReadSwissprot.py  --i  input_file  --o output_file                               *
 #   Where:                                                                                  *
+#   --i input_file is the UniprotKB Swissprot text file, which can be downloaded from       *
+#    ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.dat.gz *
+#                                                                                           *
+#   The current downloaded file, which serves as input,  resides on hutlab3 in              *
+#    /n/huttenhower_lab/data/uniprot/2014-09/uniprot_sprot.dat                              *
+#                                                                                           *
+#   The current output of thei program is stored in humann2_test directory under the name   *
+#   swissprot_mapping_AC_to_EC                                                              * 
 #                                                                                           *
 #   Written by George Weingart - george.weingart@gmail.com   10/06/2014                     *  
 #********************************************************************************************
@@ -39,35 +44,38 @@ def ReadSwissprot(i,o):
 	oFile = o
 	strTab = "\t"
 	strNewLine = "\n"
+	bFlagEC = False
+	lECs = list()
 	InputFile = open(iFile)
 	OutputFile = open(oFile,'w')
 	LineCntr = 0
 	OutputLineCntr = 0
-	for iLine in InputFile:
+	for iLine in InputFile: 
 			LineCntr = LineCntr +1
 			if iLine.startswith("AC   "):
 				lTemp = iLine.rstrip().split().pop().split(";")
 				lACs = [var for var in lTemp if var]
   
-			if iLine.startswith("DE   "):
- 			    lTemp = iLine.rstrip().split().pop().split(";")
-			    lECsTemp = [var for var in lTemp if var]
-			    lECs = list()
-			    bFlagEC = False
-			    for strEC in lECsTemp:
-					if strEC.startswith("EC="):
-						bFlagEC = True
-						strEC  =  strEC.replace("EC=","")
-						strEC  =  strEC.replace(".-","")
-						lECs.append(strEC)
-			    if  bFlagEC == True:
-					for ProtAC in lACs:
+			if iLine.startswith("DE   ") and "EC=" in iLine:
+				bFlagEC = True
+				iLine1 = iLine.replace(";"," ")
+				iECLoc = iLine1.find("EC=") + 3
+				EC = iLine1[iECLoc:].split(" ")[0]
+				EC  =  EC.replace("EC=","")
+				EC  =  EC.replace(".-","")
+				lECs.append(EC)
+ 
+			if  bFlagEC == True and iLine.startswith("//"):
+				   for ProtAC in lACs:
 						OutputLine = ProtAC 
 						for EC in  lECs:
 							OutputLine =  OutputLine + strTab + EC  
-					OutputLine = OutputLine + strNewLine
-					OutputFile.write(OutputLine )
-					OutputLineCntr = OutputLineCntr + 1
+						OutputLine = OutputLine + strNewLine
+						OutputFile.write(OutputLine )
+						OutputLineCntr = OutputLineCntr + 1
+				   bFlagEC = False
+				   lECs = list()
+				   lACs = list() 
 	print "Read " + str(LineCntr) + " Input Lines"
 	print "Wrote " + str(OutputLineCntr) + " Output Lines"
 	InputFile.close()
