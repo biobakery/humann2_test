@@ -17,12 +17,14 @@ import tempfile
 #    1. Read the reactions file (See location below) and build relation: REACTION--> EC     *
 #    2. Read Swissprot file (See location below) and build relations EC--> Swissprot AC     *
 #    3. Build the relations REACTIONs --> UniprotKb ACs                                     *
+#    4. Build and print the relations REACTIONS --> UniRef50, 90                            *
 #                                                                                           *
 #  -----------------------------------------------------------------------------------------*
 #  Invoking the program:                                                                    *
 #  ---------------------                                                                    *
-#   
-#   Where:
+#  python Reaction_to_Uniref5090.py --i_reactions /n/huttenhower_lab_nobackup/downloads/metacyc/18.1/data/reactions.dat  --i_sprot /n/huttenhower_lab/data/uniprot/2014-09/uniprot_sprot.dat  --uniref50gz /n/huttenhower_lab/data/idmapping/map_uniprot_UniRef50.dat.gz --uniref90gz /n/huttenhower_lab/data/idmapping/map_uniprot_UniRef90.dat.gz  --o mapping_reactions_to_uniref5090
+#                                                                                           *
+#   Where:                                                                                  *
 #    --i_reactions, is the reactions file, which is currently located at                    *
 #    /n/huttenhower_lab_nobackup/downloads/metacyc/18.1/reactions.dat                       *
 #                                                                                           *           
@@ -31,7 +33,9 @@ import tempfile
 #   The current downloaded i_sprot file, which serves as input,  resides on hutlab3 in      *
 #    /n/huttenhower_lab/data/uniprot/2014-09/uniprot_sprot.dat                              *
 #                                                                                           *
-#                                                                                           *
+#    uniref50gz and uniref90gz are the uniref mappings (Uniref50 --> Uniprot AC)            * 
+#     currently located at                                                                  *
+#     /n/huttenhower_lab/data/idmapping/map_uniprot_UniRef50.dat.gz                         *
 
 #   Written by George Weingart - george.weingart@gmail.com   10/08/2014                     *  
 #********************************************************************************************
@@ -314,8 +318,6 @@ CommonArea  = ResolveReactionsToACs(CommonArea)		#Build the relations Reactions 
 #***************************************
 # Processing Uniref50 90 files         *
 #***************************************
-####strUniref50gz = os.path.split(strUniref50gz)[1]  # Take the filename only,  just in case the User provided an absolute path
-####strUniref90gz = os.path.split(strUniref90gz)[1]  # Take the filename only,  just in case the User provided an absolute path
 
 dInputFiles =  InitializeProcess(strUniref50gz,  strUniref90gz)  # Invoke initialization
 strInput5090 =  dInputFiles["File5090"]		#Name of the Uniref5090 file

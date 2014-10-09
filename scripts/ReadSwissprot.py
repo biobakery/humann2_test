@@ -97,7 +97,7 @@ def ReadSwissprot(i,o):
 #*************************************************************************************
 def read_params(x):
 	CommonArea = dict()	
-	parser = argparse.ArgumentParser(description='Analysis of Short reads using k-mers search')
+	parser = argparse.ArgumentParser(description='Read Swissprot and generate an exract with AC and all ECs related to it')
 	parser.add_argument('--i', action="store", dest='i',nargs='?')
 	parser.add_argument('--o', action="store", dest='o',nargs='?',  default='output_analysis')
 	CommonArea['parser'] = parser

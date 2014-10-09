@@ -146,6 +146,7 @@ def ProcessMCCFile(strInputmcc,  dUniprotUniref):
 #*   Initialize the process                                                                 *
 #********************************************************************************************
 def InitializeProcess(strUniref50gz,  strUniref90gz):
+
 	dInputFiles = dict()									# Initialize the dictionary
 	dInputFiles["Uniref50gz"] = strUniref50gz				# Store 1st file name in dictionary
 	dInputFiles["Uniref90gz"] = strUniref90gz				# Store 2nd file name in dictionary
@@ -154,19 +155,21 @@ def InitializeProcess(strUniref50gz,  strUniref90gz):
 	dInputFiles["TempDirName"] = strTempDir					# Store the name of the temp dir for future use
 	cmd_chmod = "chmod 755 /" + strTempDir					# Change permissions to make usable 
 	os.system(cmd_chmod)									# Invoke os
-	
+	strUniref50gzFileName = os.path.split(strUniref50gz)[1]
+	strUniref90gzFileName = os.path.split(strUniref90gz)[1]
 	print "Unzipping uniref50 file"
-	cmd_gunzip = "gunzip -c " + strUniref50gz + ">" + strTempDir + "/" + strUniref50gz[:-3] # Build the gunzip command
+	cmd_gunzip = "gunzip -c " + strUniref50gz + ">" + strTempDir + "/" + strUniref50gzFileName[:-3] # Build the gunzip command
 	os.system(cmd_gunzip)									# Invoke os
 	print "Unzipping uniref90 file"
- 	cmd_gunzip = "gunzip -c " + strUniref90gz + ">" + strTempDir + "/" + strUniref90gz[:-3] # Build the gunzip command
+ 	cmd_gunzip = "gunzip -c " + strUniref90gz + ">" + strTempDir + "/" + strUniref90gzFileName[:-3] # Build the gunzip command
 	os.system(cmd_gunzip)									# Invoke os
 	print "Pasting Uniref50 to Uniref90"
-	cmd_paste =  "paste " +  strTempDir + "/" + strUniref50gz[:-3] + " " +\
-						strTempDir + "/" + strUniref90gz[:-3] + ">" +\
-						strTempDir + "/" + strUniref50gz[:-3] +  "90"    # Paste the two files together
+
+	cmd_paste =  "paste " +  strTempDir + "/" + strUniref50gzFileName[:-3] + " " +\
+						strTempDir + "/" + strUniref90gzFileName[:-3] + ">" +\
+						strTempDir + "/" + strUniref50gzFileName[:-7] +  "90"    # Paste the two files together
 	os.system(cmd_paste )									# Invoke os
-	dInputFiles["File5090"] = strTempDir + "/" + strUniref50gz[:-3] +  "90"  #Post the file created into the Common Area
+	dInputFiles["File5090"] = strTempDir + "/" + strUniref50gzFileName[:-7] +  "90"  #Post the file created into the Common Area
 	return dInputFiles
  
 #********************************************************************************************
@@ -196,8 +199,8 @@ strUniref90gz = sys.argv[2]					# The 2nd file is the zipped version of the Unir
 strInputmcc =  sys.argv[3]					#Name if mcc file
 OutputFileName = sys.argv[4]				#Name of the output file
 
-strUniref50gz = os.path.split(strUniref50gz)[1]  # Take the filename only,  just in case the User provided an absolute path
-strUniref90gz = os.path.split(strUniref90gz)[1]  # Take the filename only,  just in case the User provided an absolute path
+####strUniref50gz = os.path.split(strUniref50gz)[1]  # Take the filename only,  just in case the User provided an absolute path
+####strUniref90gz = os.path.split(strUniref90gz)[1]  # Take the filename only,  just in case the User provided an absolute path
 
 sUniprotIds = GatherNeededUniprotIDs(strInputmcc)  # Collect the needed Uniprot IDs - not need to load all
 dInputFiles =  InitializeProcess(strUniref50gz,  strUniref90gz)  # Invoke initialization
