@@ -21,7 +21,7 @@ import tempfile
 #  -----------------------------------------------------------------------------------------*
 #  Invoking the program:                                                                    *
 #  ---------------------                                                                    *
-#   python Reaction_to_Uniref5090.py   --i_reactions reactions_file  --i_sprot  input_file --o output_file  
+#   
 #   Where:
 #    --i_reactions, is the reactions file, which is currently located at                    *
 #    /n/huttenhower_lab_nobackup/downloads/metacyc/18.1/reactions.dat                       *
@@ -179,8 +179,8 @@ def ResolveReactionsToACs(CommonArea):
     for Reaction, lACs  in CommonArea["dReactionsToACs"].iteritems():
 		for AC in lACs:
 			lAccumulatedACs.append(AC)
-    sAccumulatedACs = set(lAccumulatedACs)		#Get rid of dups
-    CommonArea["lAccumulatedACs"] = list(sAccumulatedACs)	
+    CommonArea["sAccumulatedACs"] = set(lAccumulatedACs)		#Get rid of dups
+    print "The total number of AC entries is: ",  str(len(CommonArea["sAccumulatedACs"]))
     return CommonArea
 
 	
@@ -189,6 +189,7 @@ def ResolveReactionsToACs(CommonArea):
 #*   Read Uniref 5090 file  and build translation table                                     *
 #********************************************************************************************
 def ReadUniref5090File(strInput5090,sUniprotIds):
+	
 	dUniprotUniref = dict()
 	iTotalUniref5090RecsLoaded = 0							# Counter of Uniref5090 recs loaded
 	iTotalUniref5090RecsRead = 0							# Counter of Uniref5090 recs Read
@@ -200,6 +201,7 @@ def ReadUniref5090File(strInput5090,sUniprotIds):
 		if  iTotalUniref5090RecsRead %  iPrintAfterReads == 0:	# If we need to print status
 			print "Total of ", iTotalUniref5090RecsRead, " Uniref5090 records read"
 		lInputLineSplit = strInputLine.split() 				# Split the line using space as delimiter
+
 		if lInputLineSplit[0]  not in sUniprotIds:			# If we don't need this ID 
 			continue										# skip it 
 		lEnt5090 = list()									# Initialize list
@@ -220,6 +222,7 @@ def ReadUniref5090File(strInput5090,sUniprotIds):
 #*   Initialize the process                                                                 *
 #********************************************************************************************
 def InitializeProcess(strUniref50gz,  strUniref90gz):
+
 	dInputFiles = dict()									# Initialize the dictionary
 	dInputFiles["Uniref50gz"] = strUniref50gz				# Store 1st file name in dictionary
 	dInputFiles["Uniref90gz"] = strUniref90gz				# Store 2nd file name in dictionary
@@ -228,19 +231,21 @@ def InitializeProcess(strUniref50gz,  strUniref90gz):
 	dInputFiles["TempDirName"] = strTempDir					# Store the name of the temp dir for future use
 	cmd_chmod = "chmod 755 /" + strTempDir					# Change permissions to make usable 
 	os.system(cmd_chmod)									# Invoke os
-	
+	strUniref50gzFileName = os.path.split(strUniref50gz)[1]
+	strUniref90gzFileName = os.path.split(strUniref90gz)[1]
 	print "Unzipping uniref50 file"
-	cmd_gunzip = "gunzip -c " + strUniref50gz + ">" + strTempDir + "/" + strUniref50gz[:-3] # Build the gunzip command
+	cmd_gunzip = "gunzip -c " + strUniref50gz + ">" + strTempDir + "/" + strUniref50gzFileName[:-3] # Build the gunzip command
 	os.system(cmd_gunzip)									# Invoke os
 	print "Unzipping uniref90 file"
- 	cmd_gunzip = "gunzip -c " + strUniref90gz + ">" + strTempDir + "/" + strUniref90gz[:-3] # Build the gunzip command
+ 	cmd_gunzip = "gunzip -c " + strUniref90gz + ">" + strTempDir + "/" + strUniref90gzFileName[:-3] # Build the gunzip command
 	os.system(cmd_gunzip)									# Invoke os
 	print "Pasting Uniref50 to Uniref90"
-	cmd_paste =  "paste " +  strTempDir + "/" + strUniref50gz[:-3] + " " +\
-						strTempDir + "/" + strUniref90gz[:-3] + ">" +\
-						strTempDir + "/" + strUniref50gz[:-3] +  "90"    # Paste the two files together
+
+	cmd_paste =  "paste " +  strTempDir + "/" + strUniref50gzFileName[:-3] + " " +\
+						strTempDir + "/" + strUniref90gzFileName[:-3] + ">" +\
+						strTempDir + "/" + strUniref50gzFileName[:-7] +  "90"    # Paste the two files together
 	os.system(cmd_paste )									# Invoke os
-	dInputFiles["File5090"] = strTempDir + "/" + strUniref50gz[:-3] +  "90"  #Post the file created into the Common Area
+	dInputFiles["File5090"] = strTempDir + "/" + strUniref50gzFileName[:-7] +  "90"  #Post the file created into the Common Area
 	return dInputFiles
 
 #********************************************************************************************
@@ -309,14 +314,15 @@ CommonArea  = ResolveReactionsToACs(CommonArea)		#Build the relations Reactions 
 #***************************************
 # Processing Uniref50 90 files         *
 #***************************************
-strUniref50gz = os.path.split(strUniref50gz)[1]  # Take the filename only,  just in case the User provided an absolute path
-strUniref90gz = os.path.split(strUniref90gz)[1]  # Take the filename only,  just in case the User provided an absolute path
+####strUniref50gz = os.path.split(strUniref50gz)[1]  # Take the filename only,  just in case the User provided an absolute path
+####strUniref90gz = os.path.split(strUniref90gz)[1]  # Take the filename only,  just in case the User provided an absolute path
+
 dInputFiles =  InitializeProcess(strUniref50gz,  strUniref90gz)  # Invoke initialization
 strInput5090 =  dInputFiles["File5090"]		#Name of the Uniref5090 file
 
 
 print "Starting the load of the 5090 table\n"
-CommonArea['dUniprotUniref'] = ReadUniref5090File(strInput5090,CommonArea["lAccumulatedACs"])	#Invoke reading of the file
+CommonArea['dUniprotUniref'] = ReadUniref5090File(strInput5090,CommonArea["sAccumulatedACs"])	#Invoke reading of the file
 
 cmd_remove_tempdir = "rm -r /" + dInputFiles["TempDirName"]		# Remove the temporary directory
 os.system(cmd_remove_tempdir)
