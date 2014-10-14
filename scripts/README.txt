@@ -1,38 +1,41 @@
 HUMAnN2 Test Scripts
 
-To create the HUMAnN2 data files from the MetaCyc database:
+Steps to create a HUMAnN2 pathways database set of files:
 
-1. Download the meta.tar.gz of flat-files from MetaCyc.
+1. Using the UniProt pathways database
+TBD
+
+2. Using the MetaCyc pathways database
+
+2.1. Download the meta.tar.gz of flat-files from MetaCyc.
 A description of the files along with download instructions 
 can be found at http://bioinformatics.ai.sri.com/ptools/flatfile-format.html
 
-2. Decompress the download.
+2.2. Decompress the download.
 $ tar zxvf meta.tar.gz
 
-3. Create the humann2/data/mcc data file.
-$ ./metacyc2mcc.py < 17.0/data/reactions.dat > humann2/data/mcc
+NOTE: Instructions that follow refer to the metacyc directory as $METACYC.
+If you are running on hutlab3, $METACYC=/n/huttenhower_lab_nobackup/downloads/metacyc/
 
-4. Create the humann2/data/mcpc data file.
-$ ./metacyc2mcpc.py < 17.0/data/pathways.dat > humann2/data/mcpc
+2.3. Create the humann2/data/metacyc_reactions.uniref data file using Uniprot EC mapping.
 
- ***************************************************************************
- *    UPDATE:  We have downloaded version 18.1  of the metacyc files       *
- *    into a new directory called                                          *
- *    /n/huttenhower_lab_nobackup/downloads/metacyc/18.1                   *
- *    August 21, 2014                                                      *
- *    In order to use the updated files please modify the commands         *
- *    in 2. and 3. above to reflect the new directory as follows:          *
- *                                                                         *
- *  
-$./metacyc2mcc.py <
-/n/huttenhower_lab_nobackup/downloads/metacyc/18.1/data/reactions.dat >
-humann2/data/mcc
+2.3.1 Download the UniProtKB SwissProt text file.
+$ wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.dat.gz
 
-$./metacyc2mcpc.py <
-/n/huttenhower_lab_nobackup/downloads/metacyc/18.1/data/pathways.dat >
-humann2/data/mcpc
- *                                                                         *
- ***************************************************************************
+NOTE: If you are running on hutlab3, this file can be found at /n/huttenhower_lab/data/uniprot/2014-09/ .
+
+2.3.2 Download and decompress the UniProt id mappings.
+$ wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/idmapping.dat.gz
+$ gunzip idmapping.dat.gz
+
+NOTE: If you are running on hutlab3, these files can be found at /n/huttenhower_lab/data/idmapping/ .
+
+2.3.3 Create the metacyc_reations.uniref file (pathways database file1).
+$ python Reaction_to_Uniref5090.py --i_reactions $METACYC/18.1/data/reactions.dat  --i_sprot uniprot_sprot.dat  --uniref50gz map_uniprot_UniRef50.dat.gz --uniref90gz map_uniprot_UniRef90.dat.gz  --o metacyc_reactions.uniref
+
+2.4. Create the humann2/data/metacyc_pathways data file (pathways database file2).
+$ ./metacyc2mcpc.py < $METACYC/18.1/data/pathways.dat > metacyc_pathways
+
  
 #********************************************************************************************
 #    Read Uniref Program                                                                    *
