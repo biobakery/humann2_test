@@ -19,14 +19,15 @@ If you are running on hutlab3, $METACYC=/n/huttenhower_lab_nobackup/downloads/me
 
 2.3. Create the humann2/data/metacyc_reactions.uniref data file using Uniprot EC mapping.
 
-2.3.1 Download the UniProtKB SwissProt text file.
+2.3.1 Download and decompress the UniProtKB SwissProt text file.
 $ wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.dat.gz
+$ gunzip uniprot_sprot.dat.gz
 
 NOTE: If you are running on hutlab3, this file can be found at /n/huttenhower_lab/data/uniprot/2014-09/ .
 
-2.3.2 Download and decompress the UniProt id mappings.
-$ wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/idmapping.dat.gz
-$ gunzip idmapping.dat.gz
+2.3.2 Download and create the UniProt to UniRef50/90 mappings from the full set.
+$ ./UniProt_mapping.py -i UniRef50 -o map_uniprot_UniRef50.dat.gz
+$ ./UniProt_mapping.py -i UniRef90 -o map_uniprot_UniRef90.dat.gz
 
 NOTE: If you are running on hutlab3, these files can be found at /n/huttenhower_lab/data/idmapping/ .
 
