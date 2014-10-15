@@ -175,7 +175,6 @@ def ResolveReactionsToACs(CommonArea):
     print "The table Reactions --> UniprotKb ACs contains "  + str(ECsToUniprotACsCntr) + " Reactions"
     CommonArea['dReactionsToACs'] = dReactionsToACs
     del CommonArea["dECsToUniprotACs"]
-    ###############################------>  We will need it later---->  del CommonArea["dReactionsToECs"]
 	#*****************************************************************
 	#*   Select only the ACs that are needed for next step           *
 	#*****************************************************************
@@ -270,9 +269,9 @@ def GenerateExtract(CommonArea, OutputFileName):
 		for AC in lACs:
 			if AC in CommonArea['dUniprotUniref']:
 				bFlagUnirefFound = True
-				Uniref50 = CommonArea['dUniprotUniref'][AC][0] 
+				Uniref50 = "UniRef50_" + CommonArea['dUniprotUniref'][AC][0] 
 				lU50.append(Uniref50)
-				Uniref90 = CommonArea['dUniprotUniref'][AC][1] 
+				Uniref90 = "UniRef90_" + CommonArea['dUniprotUniref'][AC][1] 
 				lU90.append(Uniref90)
 		if	bFlagUnirefFound == True:
 			lBuiltRecord.append(Reaction)
@@ -285,10 +284,10 @@ def GenerateExtract(CommonArea, OutputFileName):
 			except:
 				pass
 			
-			lBuiltRecord.append(strHeaderUniref50)
+			####lBuiltRecord.append(strHeaderUniref50)
 			for U50 in lU50:
 				lBuiltRecord.append(U50)
-			lBuiltRecord.append(strHeaderUniref90)
+			####lBuiltRecord.append(strHeaderUniref90)
 			for U90 in lU90:
 				lBuiltRecord.append(U90)
 
