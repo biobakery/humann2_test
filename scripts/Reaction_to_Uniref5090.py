@@ -281,11 +281,7 @@ def GenerateExtract(CommonArea, OutputFileName):
 			#*   Add the EC                                *
 			#***********************************************
 			try:
-				ECs = CommonArea["dReactionsToECs"][Reaction]
-				lBuiltRecord.append("***StartOfECs***")
-				for EC in ECs:
-					lBuiltRecord.append(EC)
-				lBuiltRecord.append("***EndOfECs***")
+				lBuiltRecord.append(CommonArea["dReactionsToECs"][Reaction][0])  #Post the first EC
 			except:
 				pass
 			
