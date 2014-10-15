@@ -19,8 +19,9 @@ If you are running on hutlab3, $METACYC=/n/huttenhower_lab_nobackup/downloads/me
 
 2.3. Create the humann2/data/metacyc_reactions.uniref data file using Uniprot EC mapping.
 
-2.3.1 Download the UniProtKB SwissProt text file.
+2.3.1 Download and decompress the UniProtKB SwissProt text file.
 $ wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.dat.gz
+$ gunzip uniprot_sprot.dat.gz
 
 NOTE: If you are running on hutlab3, this file can be found at /n/huttenhower_lab/data/uniprot/2014-09/ .
 
