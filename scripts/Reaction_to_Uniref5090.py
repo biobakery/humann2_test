@@ -274,10 +274,13 @@ def GenerateExtract(CommonArea, OutputFileName):
 				Uniref90 = "UniRef90_" + CommonArea['dUniprotUniref'][AC][1] 
 				lU90.append(Uniref90)
  
-		for U50 in lU50:
+		lU50Sorted = sorted(list(set(lU50)))
+		lU90Sorted = sorted(list(set(lU90)))
+ 
+		for U50 in lU50Sorted:
 			bFlagUnirefFound = True
 			lBuiltRecord.append(U50)
-		for U90 in lU90:
+		for U90 in lU90Sorted:
 			bFlagUnirefFound = True
 			lBuiltRecord.append(U90)
  
