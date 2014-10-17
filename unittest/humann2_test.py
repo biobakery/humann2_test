@@ -22,6 +22,7 @@ import unittest
 import importlib
 
 import cfg
+import utils
 
 def parse_arguments (args):
     """
@@ -37,9 +38,8 @@ def parse_arguments (args):
         default=False)
     parser.add_argument(
         "--humann2",
-        help="directory containing HUMAnN2\n[REQUIRED]",
-        metavar="<humann2/>",
-        required=True)
+        help="directory containing HUMAnN2\n[DEFAULT: $PYTHONPATH]",
+        metavar="<humann2/>")
 
     return parser.parse_args()
 
@@ -48,9 +48,17 @@ def main():
     # Parse arguments from command line
     args=parse_arguments(sys.argv)
 
+    # look for the humann2 executable in the path if not provided
+    if not args.humann2:
+        humann2_path=utils.return_exe_path("humann2.py")
+        if not humann2_path:
+            sys.exit("Please provide the path to humann2.py using the option --humann2.")
+    else:
+        humann2_path=args.humann2
+
     # Add humann2 and src directory to python path
-    sys.path.append(args.humann2)
-    sys.path.append(os.path.join(args.humann2,"src"))
+    sys.path.append(humann2_path)
+    sys.path.append(os.path.join(humann2_path,"src"))
 
     # Update verbosity based on user input
     verbosity_setting=1
