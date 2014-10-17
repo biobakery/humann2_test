@@ -175,7 +175,6 @@ def ResolveReactionsToACs(CommonArea):
     print "The table Reactions --> UniprotKb ACs contains "  + str(ECsToUniprotACsCntr) + " Reactions"
     CommonArea['dReactionsToACs'] = dReactionsToACs
     del CommonArea["dECsToUniprotACs"]
-    ###############################------>  We will need it later---->  del CommonArea["dReactionsToECs"]
 	#*****************************************************************
 	#*   Select only the ACs that are needed for next step           *
 	#*****************************************************************
@@ -258,44 +257,41 @@ def InitializeProcess(strUniref50gz,  strUniref90gz):
 def GenerateExtract(CommonArea, OutputFileName):
 	strNewLine = "\n"
 	strTab = "\t"
-	strHeaderUniref50 = "**UNIREF50**"
-	strHeaderUniref90 = "**UNIREF90**"
 	ReactionToUnirefCntr = 0
+	sReactionsWritten = set()
+	
 	OutputFile = open(OutputFileName,'w')		#Open the Output file
 	for Reaction, lACs  in CommonArea["dReactionsToACs"].iteritems():
 		bFlagUnirefFound = False
-		lBuiltRecord = list()
+		lBuiltRecord = [Reaction]
+		lBuiltRecord.append(CommonArea["dReactionsToECs"][Reaction][0])  #Post the first EC
 		lU50 = list()
 		lU90 = list()	
 		for AC in lACs:
 			if AC in CommonArea['dUniprotUniref']:
-				bFlagUnirefFound = True
-				Uniref50 = CommonArea['dUniprotUniref'][AC][0] 
+				Uniref50 = "UniRef50_" + CommonArea['dUniprotUniref'][AC][0] 
 				lU50.append(Uniref50)
-				Uniref90 = CommonArea['dUniprotUniref'][AC][1] 
+				Uniref90 = "UniRef90_" + CommonArea['dUniprotUniref'][AC][1] 
 				lU90.append(Uniref90)
-		if	bFlagUnirefFound == True:
-			lBuiltRecord.append(Reaction)
+ 
+		lU50Sorted = sorted(list(set(lU50)))
+		lU90Sorted = sorted(list(set(lU90)))
+ 
+		for U50 in lU50Sorted:
+			bFlagUnirefFound = True
+			lBuiltRecord.append(U50)
+		for U90 in lU90Sorted:
+			bFlagUnirefFound = True
+			lBuiltRecord.append(U90)
+ 
+		strBuiltRecord = "\t".join(lBuiltRecord) + 	strNewLine
+		lBuiltRecord = list()
 			
-			#***********************************************
-			#*   Add the EC                                *
-			#***********************************************
-			try:
-				lBuiltRecord.append(CommonArea["dReactionsToECs"][Reaction][0])  #Post the first EC
-			except:
-				pass
-			
-			lBuiltRecord.append(strHeaderUniref50)
-			for U50 in lU50:
-				lBuiltRecord.append(U50)
-			lBuiltRecord.append(strHeaderUniref90)
-			for U90 in lU90:
-				lBuiltRecord.append(U90)
-
-			strBuiltRecord = "\t".join(lBuiltRecord) + 	strNewLine
-			
+		if Reaction not in sReactionsWritten  and bFlagUnirefFound == True:
+			sReactionsWritten = sReactionsWritten | {Reaction}
 			OutputFile.write(strBuiltRecord )
 			ReactionToUnirefCntr = ReactionToUnirefCntr + 1
+			
 	OutputFile.close()	
 	print "Total REACTION -> Uniref(50) Uniref(90) relations generated in the file " + OutputFileName + " = " + str(ReactionToUnirefCntr)
 	return CommonArea  
