@@ -7,11 +7,15 @@ import cfg
 import utils
 
 import utilities
+import config
 
 class TestHumann2UtilitiesFunctions(unittest.TestCase):
     """
     Test the functions found in humann2/src/utilities.py
     """
+    
+    def setUp(self):
+        config.unnamed_temp_dir="/tmp/"
 
     def test_file_exists_readable(self):
         """
