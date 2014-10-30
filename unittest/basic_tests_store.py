@@ -219,10 +219,10 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         
         alignments_store=store.Alignments()
         
-        alignments_store.add("gene2", "Q3", 0.01, "bug1")
-        alignments_store.add("gene1", "Q1", 0.01, "bug2")
-        alignments_store.add("gene3", "Q2", 0.01, "bug3")
-        alignments_store.add("gene1", "Q1", 0.01, "bug1")
+        alignments_store.add("gene2", 1, "Q3", 0.01, "bug1")
+        alignments_store.add("gene1", 1, "Q1", 0.01, "bug2")
+        alignments_store.add("gene3", 1, "Q2", 0.01, "bug3")
+        alignments_store.add("gene1", 1, "Q1", 0.01, "bug1")
         
         # check the total bugs
         self.assertEqual(alignments_store.count_bugs(),3)
@@ -243,10 +243,10 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         
         alignments_store=store.Alignments()
         
-        alignments_store.add("gene2", "Q3", 0.01, "bug1")
-        alignments_store.add("gene1", "Q1", 0.01, "bug2")
-        alignments_store.add("gene3", "Q2", 0.01, "bug3")
-        alignments_store.add("gene1", "Q1", 0.01, "bug1")
+        alignments_store.add("gene2", 1, "Q3", 0.01, "bug1")
+        alignments_store.add("gene1", 1, "Q1", 0.01, "bug2")
+        alignments_store.add("gene3", 1, "Q2", 0.01, "bug3")
+        alignments_store.add("gene1", 1, "Q1", 0.01, "bug1")
         
         # delete hits associated with gene
         alignments_store.delete_gene_and_hits("gene1")   
@@ -266,14 +266,14 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         
         # check the remaining hits for each gene
         self.assertEqual(sorted(alignments_store.hits_for_gene("gene2")[0]),
-            sorted(["gene2", "Q3", 0.01, "bug1"]))
+            sorted(["gene2", 1/1000.0, "Q3", 0.01, "bug1"]))
         self.assertEqual(sorted(alignments_store.hits_for_gene("gene3")[0]),
-            sorted(["gene3", "Q2", 0.01, "bug3"]))
+            sorted(["gene3", 1/1000.0, "Q2", 0.01, "bug3"]))
         
         # check the remaining hits for each bug
         self.assertEqual(sorted(alignments_store.hits_for_bug("bug1")[0]),
-            sorted(["gene2", "Q3", 0.01, "bug1"]))
+            sorted(["gene2", 1/1000.0, "Q3", 0.01, "bug1"]))
         self.assertEqual(sorted(alignments_store.hits_for_bug("bug3")[0]),
-            sorted(["gene3", "Q2", 0.01, "bug3"]))        
+            sorted(["gene3", 1/1000.0, "Q2", 0.01, "bug3"]))        
               
 

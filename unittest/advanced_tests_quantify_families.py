@@ -35,7 +35,7 @@ class TestHumann2QuantifyFamiliesFunctions(unittest.TestCase):
                 queryid=data[config.blast_query_index]
                 evalue=float(data[config.blast_evalue_index])
             
-                alignments.add(referenceids[1], queryid, evalue,referenceids[0])
+                alignments.add(referenceids[1], 1, queryid, evalue,referenceids[0])
             
         file_handle.close()
         
@@ -53,7 +53,8 @@ class TestHumann2QuantifyFamiliesFunctions(unittest.TestCase):
         config.genefamilies_file=gene_families_file
         
         # obtain the gene families
-        gene_families_file=quantify_families.gene_families(alignments)
+        gene_scores=store.GeneScores()
+        gene_families_file=quantify_families.gene_families(alignments, gene_scores)
         
         # check the gene families output is as expected
         self.assertTrue(filecmp.cmp(gene_families_file,
