@@ -53,8 +53,7 @@ class TestHumann2QuantifyFamiliesFunctions(unittest.TestCase):
         config.genefamilies_file=gene_families_file
         
         # obtain the gene families
-        gene_scores=store.GeneScores()
-        gene_families_file=quantify_families.gene_families(alignments, gene_scores)
+        gene_families_file=quantify_families.gene_families(alignments)
         
         # check the gene families output is as expected
         self.assertTrue(filecmp.cmp(gene_families_file,
