@@ -82,3 +82,32 @@ class TestHumann2UtilitiesFunctions(unittest.TestCase):
         self.assertTrue(filecmp.cmp(new_fasta_file,
             cfg.convert_fasta_file, shallow=False))
         utils.remove_temp_file(new_fasta_file)                    
+
+    def test_double_sort(self):
+        """
+        Test the double_sort function
+        """
+        
+        pathways={}
+        pathways["pathA"]=3
+        pathways["pathB"]=3
+        pathways["pathC"]=2
+        pathways["pathD"]=1
+        pathways["pathE"]=1
+        
+        double_sorted_pathways_keys_check=["pathA","pathB","pathC",
+            "pathD","pathE"]
+        
+        double_sorted_pathways_keys=utilities.double_sort(pathways)
+        
+        self.assertEqual(double_sorted_pathways_keys,double_sorted_pathways_keys_check)
+        
+        pathways["pathA"]=0.1
+        
+        double_sorted_pathways_keys=utilities.double_sort(pathways)       
+        
+        double_sorted_pathways_keys_check=["pathB","pathC",
+            "pathD","pathE","pathA"]      
+        
+        self.assertEqual(double_sorted_pathways_keys, double_sorted_pathways_keys_check)
+        
