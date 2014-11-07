@@ -10,9 +10,9 @@ of short DNA/RNA reads.
 
 This software is used to test the HUMAnN2 pipeline.
 
-Dependencies: HUMAnN2
+Dependencies: HUMAnN2 (and all HUMAnN2 dependencies)
 
-To Run: ./humann2_test.py --humann2 <humann2/>
+To Run: ./humann2_test.py 
 """
 
 import os
@@ -21,8 +21,8 @@ import argparse
 import unittest
 import importlib
 
-import cfg
-import utils
+from src import cfg
+from src import utils
 
 def parse_arguments (args):
     """
@@ -66,7 +66,7 @@ def main():
         verbosity_setting=2
         cfg.verbose=True
 
-    directory_of_tests=os.path.dirname(os.path.realpath(__file__))
+    directory_of_tests=os.path.join(os.path.dirname(os.path.realpath(__file__)),"src")
     
     basic_suite = unittest.TestLoader().discover(directory_of_tests,pattern='basic_tests_*.py')
     advanced_suite = unittest.TestLoader().discover(directory_of_tests, pattern='advanced_tests_*.py')
