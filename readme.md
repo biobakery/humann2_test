@@ -42,7 +42,7 @@ From in the HUMAnN2_Test folder, type the command:
 
 `` ./humann2_test.py ``
 
-Optionally including the "--verbose" flag will provide output similar to this if all tests pass:
+Running with the optional "--verbose" flag will produce output like the following.
 ```
 $ ./humann2_test.py --verbose
 test_break_up_fasta_file (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
@@ -67,6 +67,9 @@ Ran 16 tests in 0.013s
 
 OK
 ```
+The output describes each test which is run along with if it passes.
+The total number of tests run will be printed at the end along with the time required
+to run the tests. If any tests fail this will be indicated in the output.
 
 ### Complete option list ###
 ```
