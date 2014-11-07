@@ -19,6 +19,7 @@ class TestHumann2QuantifyFamiliesFunctions(unittest.TestCase):
     def test_gene_families(self):
         """
         Test the gene families function and the blast config indexes
+        Test UniRef50_unknown is read in and used for gene scores but not printed
         """
         
         # create a set of alignments

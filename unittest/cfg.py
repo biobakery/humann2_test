@@ -22,7 +22,7 @@ reactions_file=os.path.join(data_folder, "reactions.tsv")
 
 usearch_file=os.path.join(data_folder, "usearch_output.tsv")
 usearch_file_bug_list=["bug1","bug2","bug3","unclassified"]
-usearch_file_gene_list=["gene1","gene2","gene3","gene4","gene5"]
+usearch_file_gene_list=["UniRef50_unknown","gene1","gene2","gene3","gene4","gene5"]
 
 gene_familes_file=os.path.join(data_folder, "gene_families.tsv")
 

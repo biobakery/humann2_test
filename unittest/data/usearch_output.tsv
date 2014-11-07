@@ -8,3 +8,5 @@ read1	bug2|gene1	100.0	20	0	0	41	100	1	53	2.0	*
 read2	bug3|gene2	92.0	25	2	0	26	100	1	949	2.0	*
 read3	unclassified|gene1	100.0	27	0	0	3	83	1	58	2.0	*
 read4	unclassified|gene2	75.0	24	6	0	3	74	1	410	2.0	*
+read7	bug3|UniRef50_unknown	67.9	28	9	0	17	100	1	539	1.0	*
+read1	bug3|UniRef50_unknown	67.9	28	9	0	17	100	1	539	1.0	*
