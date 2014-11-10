@@ -2,6 +2,8 @@ import unittest
 import importlib
 import os
 import filecmp
+import sys
+import logging
 
 import cfg
 import utils
@@ -16,28 +18,65 @@ class TestHumann2UtilitiesFunctions(unittest.TestCase):
     
     def setUp(self):
         config.unnamed_temp_dir="/tmp/"
+        
+        # set up nullhandler for logger
+        logging.getLogger('utilities').addHandler(logging.NullHandler())
 
-    def test_file_exists_readable(self):
+    def test_file_exists_readable_cfg_file(self):
         """
-        Test the file_exists_readable function
+        Test the file_exists_readable function with a config file
         """
         
         utilities.file_exists_readable(cfg.small_fasta_file)
-
-    def test_count_reads(self):
+        
+    def test_file_exists_readable_NA_file(self):
         """
-        Test the count_reads function
+        Test the file_exists_readable function with out a file
+        """
+        
+        # Redirect stdout
+        sys.stdout=open(os.devnull,"w")
+
+        with self.assertRaises(IOError):
+            utilities.file_exists_readable(
+            os.path.join(cfg.data_folder,"not_a_file"),raise_IOError=True)
+
+        # Undo stdout redirect
+        sys.stdout=sys.__stdout__
+
+    def test_count_reads_fasta(self):
+        """
+        Test the count_reads function on a fasta file
         """
         
         fasta_seqs=utilities.count_reads(cfg.small_fasta_file)
         self.assertEqual(fasta_seqs, cfg.small_fasta_file_total_sequences)                
+        
+    def test_count_reads_fastq(self):
+        """
+        Test the count_reads function on a fastq file
+        """               
 
         fastq_seqs=utilities.count_reads(cfg.small_fastq_file)
-        self.assertEqual(fastq_seqs, cfg.small_fastq_file_total_sequences)     
+        self.assertEqual(fastq_seqs, cfg.small_fastq_file_total_sequences)      
 
-    def test_estimate_unaligned_reads(self):
+    def test_estimate_unaligned_reads_identical_files(self):
         """
-        Test the estimate_unaligned_reads function
+        Test the estimate_unaligned_reads function on identical files
+        """ 
+
+        # Test with identical files
+        percent_unaligned=utilities.estimate_unaligned_reads(
+            cfg.small_fastq_file, cfg.small_fastq_file)
+
+        percent_expected=int(cfg.small_fastq_file_total_sequences / 
+            float(cfg.small_fastq_file_total_sequences)*100)
+
+        self.assertEqual(percent_unaligned, str(percent_expected))   
+        
+    def test_estimate_unaligned_reads_fasta_and_fastq_files(self):
+        """
+        Test the estimate_unaligned_reads function on fasta/fastq file
         """
         
         # Test with a fasta and a fastq file with a different number of reads
@@ -46,15 +85,6 @@ class TestHumann2UtilitiesFunctions(unittest.TestCase):
 
         percent_expected=int(cfg.small_fastq_file_total_sequences / 
             float(cfg.small_fasta_file_total_sequences)*100)
-
-        self.assertEqual(percent_unaligned, str(percent_expected))   
-
-        # Test with identical files
-        percent_unaligned=utilities.estimate_unaligned_reads(
-            cfg.small_fastq_file, cfg.small_fastq_file)
-
-        percent_expected=int(cfg.small_fastq_file_total_sequences / 
-            float(cfg.small_fastq_file_total_sequences)*100)
 
         self.assertEqual(percent_unaligned, str(percent_expected))   
 
@@ -102,7 +132,17 @@ class TestHumann2UtilitiesFunctions(unittest.TestCase):
         
         self.assertEqual(double_sorted_pathways_keys,double_sorted_pathways_keys_check)
         
+    def test_double_sort_float(self):
+        """
+        Test the double_sort function with a float value
+        """
+        
+        pathways={}
         pathways["pathA"]=0.1
+        pathways["pathB"]=3
+        pathways["pathC"]=2
+        pathways["pathD"]=1
+        pathways["pathE"]=1
         
         double_sorted_pathways_keys=utilities.double_sort(pathways)       
         
