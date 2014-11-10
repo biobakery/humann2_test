@@ -46,24 +46,48 @@ Running with the optional "--verbose" flag will produce output like the followin
 ```
 $ ./humann2_test.py --verbose
 test_break_up_fasta_file (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
-test_count_reads (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
+test_count_reads_fasta (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
+test_count_reads_fastq (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
 test_double_sort (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
-test_estimate_unaligned_reads (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
+test_double_sort_float (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
+test_estimate_unaligned_reads_fasta_and_fastq_files (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
+test_estimate_unaligned_reads_identical_files (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
 test_fastq_to_fasta (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
-test_file_exists_readable (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
+test_file_exists_readable_NA_file (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
+test_file_exists_readable_cfg_file (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
 test_Alignments_add (basic_tests_store.TestHumann2StoreFunctions) ... ok
-test_Alignments_delete (basic_tests_store.TestHumann2StoreFunctions) ... ok
-test_PathwaysAndReactions_median_score (basic_tests_store.TestHumann2StoreFunctions) ... ok
-test_PathwaysDatabase_print_flat_file (basic_tests_store.TestHumann2StoreFunctions) ... ok
-test_PathwaysDatabase_read (basic_tests_store.TestHumann2StoreFunctions) ... ok
-test_ReactionsDatabase_read (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_Alignments_add_bug_count (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_Alignments_add_bug_list (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_Alignments_add_gene_count (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_Alignments_delete_bug_count (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_Alignments_delete_total_genes (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_PathwaysAndReactions_median_score_even_number_vary_pathways (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_PathwaysAndReactions_median_score_even_number_vary_reactions (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_PathwaysAndReactions_median_score_odd_number_vary_pathways (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_PathwaysAndReactions_median_score_odd_number_vary_reactions (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_PathwaysDatabase_print_flat_file_pathways_count (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_PathwaysDatabase_print_flat_file_pathways_list (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_PathwaysDatabase_print_flat_file_reactions_list (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_PathwaysDatabase_read_pathways_count (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_PathwaysDatabase_read_pathways_ids (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_PathwaysDatabase_read_reactions_count (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_PathwaysDatabase_read_reactions_ids (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_PathwaysDatabase_read_reactions_list (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_ReactionsDatabase_read_gene_list (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_ReactionsDatabase_read_reactions_count (basic_tests_store.TestHumann2StoreFunctions) ... ok
 test_Read_delete_id (basic_tests_store.TestHumann2StoreFunctions) ... ok
-test_Read_print_fasta (basic_tests_store.TestHumann2StoreFunctions) ... ok
-test_compute_gene_scores (basic_tests_quantify_families.TestHumann2QuantifyFamiliesFunctions) ... ok
-test_gene_families (advanced_tests_quantify_families.TestHumann2QuantifyFamiliesFunctions) ... ok
+test_Read_print_fasta_id_count (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_Read_print_fasta_id_list (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_Read_print_fasta_sequence_list (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_compute_gene_scores_double_gene_double_query (basic_tests_quantify_families.TestHumann2QuantifyFamiliesFunctions) ... ok
+test_compute_gene_scores_single_gene_double_query (basic_tests_quantify_families.TestHumann2QuantifyFamiliesFunctions) ... ok
+test_compute_gene_scores_single_gene_single_query (basic_tests_quantify_families.TestHumann2QuantifyFamiliesFunctions) ... ok
+test_gene_families_bug_list (advanced_tests_quantify_families.TestHumann2QuantifyFamiliesFunctions) ... ok
+test_gene_families_gene_list (advanced_tests_quantify_families.TestHumann2QuantifyFamiliesFunctions) ... ok
+test_gene_families_tsv_output (advanced_tests_quantify_families.TestHumann2QuantifyFamiliesFunctions) ... ok
 
 ----------------------------------------------------------------------
-Ran 16 tests in 0.013s
+Ran 40 tests in 0.030s
 
 OK
 ```
