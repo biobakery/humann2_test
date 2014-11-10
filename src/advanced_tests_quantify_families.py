@@ -20,7 +20,6 @@ class TestHumann2QuantifyFamiliesFunctions(unittest.TestCase):
         """
         Test the gene families function and the blast config indexes
         Test UniRef50_unknown is read in and used for gene scores but not printed
-        
         Test the bug list
         """
         
@@ -49,8 +48,7 @@ class TestHumann2QuantifyFamiliesFunctions(unittest.TestCase):
         """
         Test the gene families function and the blast config indexes
         Test UniRef50_unknown is read in and used for gene scores but not printed
-        
-        Test the bug list
+        Test the gene list
         """
         
         # create a set of alignments
@@ -78,7 +76,6 @@ class TestHumann2QuantifyFamiliesFunctions(unittest.TestCase):
         """
         Test the gene families function and the blast config indexes
         Test UniRef50_unknown is read in and used for gene scores but not printed
-        
         Test the tsv output
         """
         
