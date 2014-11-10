@@ -22,14 +22,14 @@ class TestHumann2UtilitiesFunctions(unittest.TestCase):
         # set up nullhandler for logger
         logging.getLogger('utilities').addHandler(logging.NullHandler())
 
-    def test_file_exists_readable_cfg_file(self):
+    def test_file_exists_readable(self):
         """
         Test the file_exists_readable function with a config file
         """
         
         utilities.file_exists_readable(cfg.small_fasta_file)
         
-    def test_file_exists_readable_NA_file(self):
+    def test_file_exists_readable_raise(self):
         """
         Test the file_exists_readable function with out a file
         """
