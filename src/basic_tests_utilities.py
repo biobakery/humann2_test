@@ -2,6 +2,8 @@ import unittest
 import importlib
 import os
 import filecmp
+import sys
+import logging
 
 import cfg
 import utils
@@ -16,6 +18,9 @@ class TestHumann2UtilitiesFunctions(unittest.TestCase):
     
     def setUp(self):
         config.unnamed_temp_dir="/tmp/"
+        
+        # set up nullhandler for logger
+        logging.getLogger('utilities').addHandler(logging.NullHandler())
 
     def test_file_exists_readable_cfg_file(self):
         """
@@ -28,10 +33,16 @@ class TestHumann2UtilitiesFunctions(unittest.TestCase):
         """
         Test the file_exists_readable function with out a file
         """
+        
+        # Redirect stdout
+        sys.stdout=open(os.devnull,"w")
 
         with self.assertRaises(IOError):
             utilities.file_exists_readable(
             os.path.join(cfg.data_folder,"not_a_file"),raise_IOError=True)
+
+        # Undo stdout redirect
+        sys.stdout=sys.__stdout__
 
     def test_count_reads_fasta(self):
         """
