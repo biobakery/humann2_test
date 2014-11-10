@@ -53,8 +53,8 @@ test_double_sort_float (basic_tests_utilities.TestHumann2UtilitiesFunctions) ...
 test_estimate_unaligned_reads_fasta_and_fastq_files (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
 test_estimate_unaligned_reads_identical_files (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
 test_fastq_to_fasta (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
-test_file_exists_readable_NA_file (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
-test_file_exists_readable_cfg_file (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
+test_file_exists_readable (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
+test_file_exists_readable_raise (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
 test_Alignments_add (basic_tests_store.TestHumann2StoreFunctions) ... ok
 test_Alignments_add_bug_count (basic_tests_store.TestHumann2StoreFunctions) ... ok
 test_Alignments_add_bug_list (basic_tests_store.TestHumann2StoreFunctions) ... ok
