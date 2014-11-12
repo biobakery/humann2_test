@@ -55,10 +55,10 @@ test_estimate_unaligned_reads_identical_files (basic_tests_utilities.TestHumann2
 test_fastq_to_fasta (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
 test_file_exists_readable (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
 test_file_exists_readable_raise (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
-test_Alignments_add (basic_tests_store.TestHumann2StoreFunctions) ... ok
 test_Alignments_add_bug_count (basic_tests_store.TestHumann2StoreFunctions) ... ok
 test_Alignments_add_bug_list (basic_tests_store.TestHumann2StoreFunctions) ... ok
 test_Alignments_add_gene_count (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_Alignments_add_gene_list (basic_tests_store.TestHumann2StoreFunctions) ... ok
 test_Alignments_delete_bug_count (basic_tests_store.TestHumann2StoreFunctions) ... ok
 test_Alignments_delete_total_genes (basic_tests_store.TestHumann2StoreFunctions) ... ok
 test_PathwaysAndReactions_median_score_even_number_vary_pathways (basic_tests_store.TestHumann2StoreFunctions) ... ok
@@ -82,12 +82,15 @@ test_Read_print_fasta_sequence_list (basic_tests_store.TestHumann2StoreFunctions
 test_compute_gene_scores_double_gene_double_query (basic_tests_quantify_families.TestHumann2QuantifyFamiliesFunctions) ... ok
 test_compute_gene_scores_single_gene_double_query (basic_tests_quantify_families.TestHumann2QuantifyFamiliesFunctions) ... ok
 test_compute_gene_scores_single_gene_single_query (basic_tests_quantify_families.TestHumann2QuantifyFamiliesFunctions) ... ok
-test_gene_families_bug_list (advanced_tests_quantify_families.TestHumann2QuantifyFamiliesFunctions) ... ok
-test_gene_families_gene_list (advanced_tests_quantify_families.TestHumann2QuantifyFamiliesFunctions) ... ok
-test_gene_families_tsv_output (advanced_tests_quantify_families.TestHumann2QuantifyFamiliesFunctions) ... ok
+test_Alignments_filter_hits_bug_count (advanced_tests_store.TestAdvancedHumann2UtilitiesFunctions) ... ok
+test_Alignments_filter_hits_bug_list (advanced_tests_store.TestAdvancedHumann2UtilitiesFunctions) ... ok
+test_Alignments_filter_hits_gene_count (advanced_tests_store.TestAdvancedHumann2UtilitiesFunctions) ... ok
+test_gene_families_bug_list (advanced_tests_quantify_families.TestAdvancedHumann2QuantifyFamiliesFunctions) ... ok
+test_gene_families_gene_list (advanced_tests_quantify_families.TestAdvancedHumann2QuantifyFamiliesFunctions) ... ok
+test_gene_families_tsv_output (advanced_tests_quantify_families.TestAdvancedHumann2QuantifyFamiliesFunctions) ... ok
 
 ----------------------------------------------------------------------
-Ran 40 tests in 0.030s
+Ran 43 tests in 0.019s
 
 OK
 ```

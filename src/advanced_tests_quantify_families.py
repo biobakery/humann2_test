@@ -11,7 +11,7 @@ import quantify_families
 import store
 import config
 
-class TestHumann2QuantifyFamiliesFunctions(unittest.TestCase):
+class TestAdvancedHumann2QuantifyFamiliesFunctions(unittest.TestCase):
     """
     Test the functions found in humann2/src/quantify_families.py
     """

@@ -453,7 +453,7 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         # check bug list
         self.assertEqual(sorted(alignments_store.bug_list()),["bug1","bug2","bug3"])
         
-    def test_Alignments_add(self):
+    def test_Alignments_add_gene_list(self):
         """
         Alignments class: Test add function
         Test the gene list
