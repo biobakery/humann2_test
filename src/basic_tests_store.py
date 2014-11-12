@@ -510,7 +510,7 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         # check the total genes
         self.assertEqual(alignments_store.count_genes(),2) 
 
-def test_Alignments_delete_bug_list(self):
+    def test_Alignments_delete_bug_list(self):
         """
         Alignments class: Test delete function
         Test the bug list
@@ -530,7 +530,7 @@ def test_Alignments_delete_bug_list(self):
         # check bug list
         self.assertEqual(sorted(alignments_store.bug_list()),["bug1","bug3"]) 
         
-def test_Alignments_delete_gene_list(self):
+    def test_Alignments_delete_gene_list(self):
         """
         Alignments class: Test delete function
         Test the gene list
@@ -550,7 +550,7 @@ def test_Alignments_delete_gene_list(self):
         # check gene list
         self.assertEqual(sorted(alignments_store.gene_list()),["gene2","gene3"]) 
         
-def test_Alignments_delete_hits_by_gene(self):
+    def test_Alignments_delete_hits_by_gene(self):
         """
         Alignments class: Test delete function
         Test the thits for each gene
@@ -572,8 +572,8 @@ def test_Alignments_delete_hits_by_gene(self):
             sorted(["gene2", 1/1000.0, "Q3", 0.01, "bug1"]))
         self.assertEqual(sorted(alignments_store.hits_for_gene("gene3")[0]),
             sorted(["gene3", 1/1000.0, "Q2", 0.01, "bug3"])) 
-        
-def test_Alignments_delete_hits_for_bug(self):
+            
+    def test_Alignments_delete_hits_for_bug(self):
         """
         Alignments class: Test delete function
         Test the hits for each bug
@@ -596,3 +596,84 @@ def test_Alignments_delete_hits_for_bug(self):
         self.assertEqual(sorted(alignments_store.hits_for_bug("bug3")[0]),
             sorted(["gene3", 1/1000.0, "Q2", 0.01, "bug3"]))  
 
+    def test_GeneScores_add(self):
+        """
+        GeneScores class: Test add function
+        """
+        
+        gene_scores=store.GeneScores()
+        
+        bug1_scores={"gene1":1,"gene2":2}
+        gene_scores.add(bug1_scores,"bug1")
+        
+        bug2_scores={"gene1":1,"gene2":2}
+        gene_scores.add(bug2_scores,"bug2")
+        
+        self.assertEqual(gene_scores.count_genes_for_bug("bug1"),2)
+        
+    def test_GeneScores_add_second_set(self):
+        """
+        GeneScores class: Test add function
+        Test adding a second set of scores to bug set
+        """
+        
+        gene_scores=store.GeneScores()
+        
+        bug1_scores={"gene1":1,"gene2":2}
+        gene_scores.add(bug1_scores,"bug1")
+        
+        bug1_scores_2={"gene3":1,"gene4":2, "gene2":22}
+        gene_scores.add(bug1_scores_2,"bug1")
+        
+        self.assertEqual(gene_scores.count_genes_for_bug("bug1"),4)
+        
+    def test_GeneScores_get_score(self):
+        """
+        GeneScores class: Test get_score function
+        """
+        
+        gene_scores=store.GeneScores()
+        
+        bug1_scores={"gene1":1,"gene2":2}
+        gene_scores.add(bug1_scores,"bug1")
+        
+        bug2_scores={"gene1":1,"gene2":2}
+        gene_scores.add(bug2_scores,"bug2")
+        
+        self.assertEqual(gene_scores.get_score("bug1","gene2"),2)
+        
+    def test_GeneScores_get_score_second_set(self):
+        """
+        GeneScores class: Test get_score function
+        Test getting the score for a second set of scores added to bug set
+        """
+        
+        gene_scores=store.GeneScores()
+        
+        bug1_scores={"gene1":1,"gene2":2}
+        gene_scores.add(bug1_scores,"bug1")
+        
+        bug1_scores_2={"gene3":1,"gene4":2, "gene2":22}
+        gene_scores.add(bug1_scores_2,"bug1")
+        
+        # Test that the most recent score for gene2 is returned
+        self.assertEqual(gene_scores.get_score("bug1","gene2"),22)
+        
+    def test_GeneScores_scores_for_bug(self):
+        """
+        GeneScores class: Test scores_for_bug
+        """
+  
+        gene_scores=store.GeneScores()
+        
+        bug1_scores={"gene1":1,"gene2":2}
+        gene_scores.add(bug1_scores,"bug1")
+        
+        bug1_scores_2={"gene3":1,"gene4":2, "gene2":22}
+        gene_scores.add(bug1_scores_2,"bug1")
+        
+        # Test that the most recent score for gene2 is returned
+        self.assertDictEqual(gene_scores.scores_for_bug("bug1"),
+            {"gene1":1,"gene2":22,"gene3":1,"gene4":2})      
+
+        
