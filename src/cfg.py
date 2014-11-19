@@ -26,3 +26,9 @@ usearch_file_gene_list=["UniRef50_unknown","gene1","gene2","gene3","gene4","gene
 
 gene_familes_file=os.path.join(data_folder, "gene_families.tsv")
 
+sam_file_with_header=os.path.join(data_folder, "file_with_header.sam")
+sam_file_without_header=os.path.join(data_folder, "file_without_header.sam")
+sam_file_without_header_with_tags=os.path.join(data_folder, "file_without_header_with_tags.sam")
+rapsearch2_output_file_with_header=os.path.join(data_folder, "rapsearch2_output_with_header.m8")
+rapsearch2_output_file_without_header=os.path.join(data_folder, "rapsearch2_output_without_header.m8")
+

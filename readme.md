@@ -22,7 +22,7 @@ All of these requirements should be installed in a location in your $PATH.
 ### Other ###
 1. Operating system (Linux or Mac)
 
-## Installing HUMAnN2 Test ##
+## Installation ##
 HUMAnN2 Test can be downloaded in two ways:
 
 * [Download](https://bitbucket.org/biobakery/humann2_test/downloads) a compressed set of files.
@@ -42,12 +42,20 @@ From in the HUMAnN2_Test folder, type the command:
 
 `` ./humann2_test.py ``
 
-Running with the optional "--verbose" flag will produce output like the following.
+Running with the optional "--verbose" flag will produce the following output.
+
 ```
 $ ./humann2_test.py --verbose
 test_break_up_fasta_file (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
 test_count_reads_fasta (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
 test_count_reads_fastq (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
+test_determine_file_format_fasta (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
+test_determine_file_format_fastq (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
+test_determine_file_format_rapsearch2_with_header (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
+test_determine_file_format_rapsearch2_without_header (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
+test_determine_file_format_sam_with_header (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
+test_determine_file_format_sam_without_header (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
+test_determine_file_format_sam_without_header_with_tags (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
 test_double_sort (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
 test_double_sort_float (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
 test_estimate_unaligned_reads_fasta_and_fastq_files (basic_tests_utilities.TestHumann2UtilitiesFunctions) ... ok
@@ -60,7 +68,16 @@ test_Alignments_add_bug_list (basic_tests_store.TestHumann2StoreFunctions) ... o
 test_Alignments_add_gene_count (basic_tests_store.TestHumann2StoreFunctions) ... ok
 test_Alignments_add_gene_list (basic_tests_store.TestHumann2StoreFunctions) ... ok
 test_Alignments_delete_bug_count (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_Alignments_delete_bug_list (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_Alignments_delete_gene_list (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_Alignments_delete_hits_by_gene (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_Alignments_delete_hits_for_bug (basic_tests_store.TestHumann2StoreFunctions) ... ok
 test_Alignments_delete_total_genes (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_GeneScores_add (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_GeneScores_add_second_set (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_GeneScores_get_score (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_GeneScores_get_score_second_set (basic_tests_store.TestHumann2StoreFunctions) ... ok
+test_GeneScores_scores_for_bug (basic_tests_store.TestHumann2StoreFunctions) ... ok
 test_PathwaysAndReactions_median_score_even_number_vary_pathways (basic_tests_store.TestHumann2StoreFunctions) ... ok
 test_PathwaysAndReactions_median_score_even_number_vary_reactions (basic_tests_store.TestHumann2StoreFunctions) ... ok
 test_PathwaysAndReactions_median_score_odd_number_vary_pathways (basic_tests_store.TestHumann2StoreFunctions) ... ok
@@ -90,10 +107,11 @@ test_gene_families_gene_list (advanced_tests_quantify_families.TestAdvancedHuman
 test_gene_families_tsv_output (advanced_tests_quantify_families.TestAdvancedHumann2QuantifyFamiliesFunctions) ... ok
 
 ----------------------------------------------------------------------
-Ran 43 tests in 0.019s
+Ran 59 tests in 0.035s
 
 OK
 ```
+
 The output describes each test which is run along with if it passes.
 The total number of tests run will be printed at the end along with the time required
 to run the tests. If any tests fail this will be indicated in the output.

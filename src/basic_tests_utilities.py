@@ -151,3 +151,74 @@ class TestHumann2UtilitiesFunctions(unittest.TestCase):
         
         self.assertEqual(double_sorted_pathways_keys, double_sorted_pathways_keys_check)
         
+    def test_determine_file_format_fasta(self):
+        """
+        Test the determine_file_format function with a fasta file
+        """
+        
+        format=utilities.determine_file_format(cfg.small_fasta_file)
+        
+        self.assertEqual(format,"fasta")
+        
+    def test_determine_file_format_fastq(self):
+        """
+        Test the determine_file_format function with a fastq file
+        """
+        
+        format=utilities.determine_file_format(cfg.small_fastq_file)
+        
+        self.assertEqual(format,"fastq")
+        
+    def test_determine_file_format_sam_with_header(self):
+        """
+        Test the determine_file_format function with a sam file with header
+        """
+        
+        format=utilities.determine_file_format(cfg.sam_file_with_header)
+        
+        self.assertEqual(format,"sam")        
+        
+    def test_determine_file_format_sam_without_header(self):
+        """
+        Test the determine_file_format function with a sam file without header
+        """
+        
+        format=utilities.determine_file_format(cfg.sam_file_without_header)
+        
+        self.assertEqual(format,"sam")    
+        
+    def test_determine_file_format_sam_without_header_with_tags(self):
+        """
+        Test the determine_file_format function with a sam file without header
+        with tags
+        """
+        
+        format=utilities.determine_file_format(cfg.sam_file_without_header_with_tags)
+        
+        self.assertEqual(format,"sam") 
+        
+        
+    def test_determine_file_format_rapsearch2_with_header(self):
+        """
+        Test the determine_file_format function with a rapsearch2 output file
+        with the standard header format
+        """
+        
+        format=utilities.determine_file_format(cfg.rapsearch2_output_file_with_header)
+        
+        self.assertEqual(format,"blastm8") 
+        
+    def test_determine_file_format_rapsearch2_without_header(self):
+        """
+        Test the determine_file_format function with a rapsearch2 output file
+        without the standard header format
+        """
+        
+        format=utilities.determine_file_format(cfg.rapsearch2_output_file_without_header)
+        
+        self.assertEqual(format,"blastm8")
+        
+        
+            
+    
+        
