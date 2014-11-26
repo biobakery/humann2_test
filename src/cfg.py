@@ -31,4 +31,5 @@ sam_file_without_header=os.path.join(data_folder, "file_without_header.sam")
 sam_file_without_header_with_tags=os.path.join(data_folder, "file_without_header_with_tags.sam")
 rapsearch2_output_file_with_header=os.path.join(data_folder, "rapsearch2_output_with_header.m8")
 rapsearch2_output_file_without_header=os.path.join(data_folder, "rapsearch2_output_without_header.m8")
+rapsearch2_output_file_with_header_no_log=os.path.join(data_folder, "rapsearch2_output_with_header_no_log.m8")
 
