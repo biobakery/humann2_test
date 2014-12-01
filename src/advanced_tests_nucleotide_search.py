@@ -89,5 +89,88 @@ class TestAdvancedHumann2NucleotideSearchFunctions(unittest.TestCase):
         
         # check the unaligned reads count
         self.assertEqual(unaligned_reads_store.count_reads(),cfg.sam_file_unaligned_reads_total_unaligned)
+        
+    def test_nucleotide_search_unaligned_reads_annotations_reference(self):
+        """
+        Test the unaligned reads and the store alignments
+        Test with a bowtie2/sam output file
+        Test the different annotation formats are recognized for reference
+        """
+        
+        # create a set of alignments
+        alignments=store.Alignments()
+        
+        # read in the aligned and unaligned reads
+        [unaligned_reads_file_fasta, unaligned_reads_store, 
+            reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
+            cfg.sam_file_annotations, alignments, keep_sam=True) 
+        
+        # remove temp files
+        utils.remove_temp_file(unaligned_reads_file_fasta)
+        utils.remove_temp_file(reduced_aligned_reads_file)
+        
+        # two of the hits should be for gene "UniRef50"
+        hits=alignments.hits_for_gene("UniRef50")
+        self.assertEqual(len(hits),2)
+        
+                
+    def test_nucleotide_search_unaligned_reads_annotations_bug(self):
+        """
+        Test the unaligned reads and the store alignments
+        Test with a bowtie2/sam output file
+        Test the different annotation formats are recognized for bug
+        """
+        
+        # create a set of alignments
+        alignments=store.Alignments()
+        
+        # read in the aligned and unaligned reads
+        [unaligned_reads_file_fasta, unaligned_reads_store, 
+            reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
+            cfg.sam_file_annotations, alignments, keep_sam=True) 
+        
+        # remove temp files
+        utils.remove_temp_file(unaligned_reads_file_fasta)
+        utils.remove_temp_file(reduced_aligned_reads_file)
+        
+        # there should be one bug which is unclassified
+        self.assertEqual(alignments.bug_list(),["unclassified"])
+        
+                
+    def test_nucleotide_search_unaligned_reads_annotations_gene_length(self):
+        """
+        Test the unaligned reads and the store alignments
+        Test with a bowtie2/sam output file
+        Test the different annotation formats are recognized for gene length
+        """
+        
+        # create a set of alignments
+        alignments=store.Alignments()
+        
+        # read in the aligned and unaligned reads
+        [unaligned_reads_file_fasta, unaligned_reads_store, 
+            reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
+            cfg.sam_file_annotations, alignments, keep_sam=True) 
+        
+        # remove temp files
+        utils.remove_temp_file(unaligned_reads_file_fasta)
+        utils.remove_temp_file(reduced_aligned_reads_file)
+        
+        # there should be 4 hits identified
+        all_hits=alignments.all_hits()
+        self.assertEqual(len(all_hits),4)
+        
+        # check for set and default gene lengths
+        for hit in all_hits:
+            bug, reference, length, query, evalue = hit
+            if reference == "UniRef50":
+                self.assertEqual(length,2000/1000.0)
+            else:
+                self.assertEqual(length,1000/1000.0)
+            
+        
+        
+        
+        
 
 
