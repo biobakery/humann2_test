@@ -29,6 +29,10 @@ gene_familes_file=os.path.join(data_folder, "gene_families.tsv")
 sam_file_with_header=os.path.join(data_folder, "file_with_header.sam")
 sam_file_without_header=os.path.join(data_folder, "file_without_header.sam")
 sam_file_without_header_with_tags=os.path.join(data_folder, "file_without_header_with_tags.sam")
+sam_file_unaligned_reads=os.path.join(data_folder,"2_aligned_3_unaligned.sam")
+sam_file_unaligned_reads_total_aligned=2
+sam_file_unaligned_reads_total_unaligned=3
+
 rapsearch2_output_file_with_header=os.path.join(data_folder, "rapsearch2_output_with_header.m8")
 rapsearch2_output_file_without_header=os.path.join(data_folder, "rapsearch2_output_without_header.m8")
 rapsearch2_output_file_with_header_no_log=os.path.join(data_folder, "rapsearch2_output_with_header_no_log.m8")
