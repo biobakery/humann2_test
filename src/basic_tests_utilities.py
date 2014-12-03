@@ -305,7 +305,24 @@ class TestHumann2UtilitiesFunctions(unittest.TestCase):
         # remove the temp gunzipped file
         utils.remove_temp_file(new_file)
         
+    def test_process_chocophlan_length(self):
+        """
+        Test the process_chocophlan_length with standard length format
+        """
         
+        length=utilities.process_chocophlan_length("1-100","gene")
+        
+        self.assertEqual(length, 100)
+        
+    def test_process_chocophlan_length_multiple(self):
+        """
+        Test the process_chocophlan_length with multiple lengths
+        Test with one length on the reverse strand
+        """
+        
+        length=utilities.process_chocophlan_length("c:100-1,1-100","gene")
+        
+        self.assertEqual(length, 200)
 
          
     
