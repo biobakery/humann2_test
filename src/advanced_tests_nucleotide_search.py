@@ -16,6 +16,8 @@ class TestAdvancedHumann2NucleotideSearchFunctions(unittest.TestCase):
     
     def setUp(self):
         config.unnamed_temp_dir="/tmp/"
+        config.temp_dir="/tmp/"
+        config.file_basename="HUMAnN2_test"
         
         # set up nullhandler for logger
         logging.getLogger('nucleotide_search').addHandler(logging.NullHandler())
@@ -167,7 +169,33 @@ class TestAdvancedHumann2NucleotideSearchFunctions(unittest.TestCase):
                 self.assertEqual(length,2000/1000.0)
             else:
                 self.assertEqual(length,1000/1000.0)
-            
+
+    def test_nucleotide_search_unaligned_reads_output_blast_format(self):
+        """
+        Test the unaligned reads and the store alignments
+        Test with a bowtie2/sam output file
+        Test the aligned reads file created is of the blastm8 format
+        """
+        
+        # create a set of alignments
+        alignments=store.Alignments()
+        
+        config.file_basename="TEST"
+        
+        # read in the aligned and unaligned reads
+        [unaligned_reads_file_fasta, unaligned_reads_store, 
+            reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
+            cfg.sam_file_annotations, alignments, keep_sam=True) 
+        
+        # test file is of the blastm8 format
+        file_format=utilities.determine_file_format(reduced_aligned_reads_file)
+        
+        # remove temp files
+        utils.remove_temp_file(unaligned_reads_file_fasta)
+        utils.remove_temp_file(reduced_aligned_reads_file)           
+        
+        self.assertEqual(file_format,"blastm8")
+        
         
         
         

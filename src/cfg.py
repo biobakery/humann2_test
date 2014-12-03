@@ -34,6 +34,7 @@ sam_file_unaligned_reads_total_aligned=2
 sam_file_unaligned_reads_total_unaligned=3
 
 sam_file_annotations=os.path.join(data_folder,"annotations.sam")
+rapsearch_file_annotations=os.path.join(data_folder,"annotations.m8")
 
 rapsearch2_output_file_with_header=os.path.join(data_folder, "rapsearch2_output_with_header.m8")
 rapsearch2_output_file_without_header=os.path.join(data_folder, "rapsearch2_output_without_header.m8")
