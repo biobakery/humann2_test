@@ -33,6 +33,8 @@ sam_file_unaligned_reads=os.path.join(data_folder,"2_aligned_3_unaligned.sam")
 sam_file_unaligned_reads_total_aligned=2
 sam_file_unaligned_reads_total_unaligned=3
 
+bam_file=os.path.join(data_folder,"file.bam")
+
 sam_file_annotations=os.path.join(data_folder,"annotations.sam")
 rapsearch_file_annotations=os.path.join(data_folder,"annotations.m8")
 

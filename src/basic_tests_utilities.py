@@ -190,6 +190,15 @@ class TestHumann2UtilitiesFunctions(unittest.TestCase):
         
         self.assertEqual(format,"sam")    
         
+    def test_determine_file_format_bam(self):
+        """
+        Test the determine_file_format function with a bam file
+        """
+        
+        format=utilities.determine_file_format(cfg.bam_file)
+        
+        self.assertEqual(format,"bam")   
+        
     def test_determine_file_format_sam_without_header_with_tags(self):
         """
         Test the determine_file_format function with a sam file without header
