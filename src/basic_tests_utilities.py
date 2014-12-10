@@ -300,10 +300,16 @@ class TestHumann2UtilitiesFunctions(unittest.TestCase):
         shutil.copyfileobj(file_handle, file_handle_gzip)
         file_handle.close()
         file_handle_gzip.close()
-           
+        
+        # Redirect stdout
+        sys.stdout=open(os.devnull,"w")
+
         # create the ungzipped file
         new_file=utilities.gunzip_file(gzip_fastq_file)
-        
+    
+        # Undo stdout redirect
+        sys.stdout=sys.__stdout__
+    
         # remove the temp gzipped file
         utils.remove_temp_file(gzip_fastq_file)
     
