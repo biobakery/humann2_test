@@ -282,6 +282,24 @@ class TestHumann2UtilitiesFunctions(unittest.TestCase):
         
         self.assertEqual(format,"fastq.gz")
         
+    def test_determine_file_format_biom(self):
+        """
+        Test the determine_file_format function with a biom file
+        """
+        
+        format=utilities.determine_file_format(cfg.biom_file)
+        
+        self.assertEqual(format,"biom")   
+
+    def test_determine_file_format_genetable(self):
+        """
+        Test the determine_file_format function with a gene table tsv file
+        """
+        
+        format=utilities.determine_file_format(cfg.genetable_file)
+        
+        self.assertEqual(format,"genetable")   
+        
     def test_gunzip_file(self):
         """
         Test the gunzip_file function

@@ -675,5 +675,47 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         # Test that the most recent score for gene2 is returned
         self.assertDictEqual(gene_scores.scores_for_bug("bug1"),
             {"gene1":1,"gene2":22,"gene3":1,"gene4":2})      
-
+    
+    def test_GeneScores_add_from_file_bug_list(self):
+        """
+        GeneScores class: Test add_from_file bug list
+        """
+        
+        gene_scores=store.GeneScores()
+        
+        gene_scores.add_from_file(cfg.genetable_file)
+        
+        # Test the bug list is as expected
+        self.assertEqual(sorted(cfg.genetable_file_bug_scores.keys()),sorted(gene_scores.bug_list()))
+        
+    def test_GeneScores_add_from_file_gene_list(self):
+        """
+        GeneScores class: Test add_from_file gene list
+        """
+        
+        gene_scores=store.GeneScores()
+        
+        gene_scores.add_from_file(cfg.genetable_file)
+        
+        # Create a list of all of the genes in the table
+        genes={}
+        for bug in cfg.genetable_file_bug_scores:
+            for gene in cfg.genetable_file_bug_scores[bug]:
+                genes[gene]=1
+        
+        # Test the gene list is as expected
+        self.assertEqual(sorted(genes.keys()),sorted(gene_scores.gene_list()))
+        
+    def test_GeneScores_add_from_file_scores(self):
+        """
+        GeneScores class: Test add_from_file scores
+        """
+        
+        gene_scores=store.GeneScores()
+        
+        gene_scores.add_from_file(cfg.genetable_file)
+        
+        # Test the scores for all bugs and genes
+        for bug in cfg.genetable_file_bug_scores:
+            self.assertDictEqual(cfg.genetable_file_bug_scores[bug],gene_scores.scores_for_bug(bug))
         

@@ -35,6 +35,22 @@ sam_file_unaligned_reads_total_unaligned=3
 
 bam_file=os.path.join(data_folder,"file.bam")
 
+biom_file=os.path.join(data_folder,"genefamilies.biom")
+genetable_file=os.path.join(data_folder,"genefamilies_biom_match.tsv")
+
+genetable_file_bug_scores={
+    "s__Bacteroides_xylanisolvens": {"UniRef50_A0A015Q7T6": 6.80272108844 },
+    "s__Parabacteroides_merdae" : { "UniRef50_A7ALT1" : 5.74712643678 },
+    "s__Bacteroides_uniformis" : { "UniRef50_Q5L8C7": 5.64971751412 },
+    "s__Faecalibacterium_prausnitzii" : { "UniRef50_R7EH44" : 5.64971751412 },
+    "all" : {
+        "UniRef50_A0A015Q7T6" : 6.80272108844,
+        "UniRef50_A7ALT1" : 5.74712643678,
+        "UniRef50_Q5L8C7" : 5.64971751412,
+        "UniRef50_R7EH44" : 5.64971751412,
+        "UniRef50_B0NLN0" : 5.26315789474 }
+    }
+
 sam_file_annotations=os.path.join(data_folder,"annotations.sam")
 rapsearch_file_annotations=os.path.join(data_folder,"annotations.m8")
 
