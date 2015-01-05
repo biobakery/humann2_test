@@ -67,7 +67,7 @@ class TestAdvancedHumann2NucleotideSearchFunctions(unittest.TestCase):
         utils.remove_temp_file(reduced_aligned_reads_file)
         
         # check the aligned reads count
-        self.assertEqual(len(alignments.all_hits()),cfg.sam_file_unaligned_reads_total_aligned)
+        self.assertEqual(len(alignments.get_hit_list()),cfg.sam_file_unaligned_reads_total_aligned)
         
         
     def test_nucleotide_search_unaligned_reads_read_count_unaligned(self):
@@ -159,12 +159,12 @@ class TestAdvancedHumann2NucleotideSearchFunctions(unittest.TestCase):
         utils.remove_temp_file(reduced_aligned_reads_file)
         
         # there should be 4 hits identified
-        all_hits=alignments.all_hits()
+        all_hits=alignments.get_hit_list()
         self.assertEqual(len(all_hits),4)
         
         # check for set and default gene lengths
         for hit in all_hits:
-            bug, reference, length, query, evalue = hit
+            bug, reference, query, evalue, length = hit
             if reference == "UniRef50":
                 self.assertEqual(length,2000/1000.0)
             else:

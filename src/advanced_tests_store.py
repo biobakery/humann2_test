@@ -2,6 +2,7 @@ import unittest
 import logging
 import os
 import sys
+import math
 
 import cfg
 
@@ -17,156 +18,126 @@ class TestAdvancedHumann2UtilitiesFunctions(unittest.TestCase):
         # set up nullhandler for logger
         logging.getLogger('store').addHandler(logging.NullHandler())
         
-    def test_Alignments_filter_hits_bug_count(self):
+    def test_Alignments_compute_gene_scores_single_gene_single_query(self):
         """
-        Test the filter hits function in the Alignments class with
-        a reactions database
+        Test the compute_gene_scores function
+        Test one hit for gene with one hit for query
+        """
         
-        Test total number of bugs
-        """
-    
-        # Create a reactions database
-        reactions_database=store.ReactionsDatabase(cfg.reactions_file)
-    
+        # create a set of hits
+        eval1=1e-4
+        eval2=3e-7
+        eval3=2e-10
+        eval4=2e-10
+        
+        gene1_length=2
+        gene2_length=3
+        gene3_length=4
+        
         # Create a set of alignments
         alignments_store=store.Alignments()
+        alignments_store.add("gene1",gene1_length,"query1",eval1,"bug1")
+        alignments_store.add("gene2",gene2_length,"query1",eval2,"bug1")
+        alignments_store.add("gene2",gene2_length,"query2",eval3,"bug1")
+        alignments_store.add("gene3",gene3_length,"query3",eval4,"bug1")
         
-        alignments_store.add("gene2", 1, "Q3", 0.01, "bug1")
-        alignments_store.add("gene1", 1, "Q1", 0.01, "bug2")
-        alignments_store.add("gene3", 1, "Q2", 0.01, "bug3")
-        alignments_store.add("gene1", 1, "Q1", 0.01, "bug1")
+        gene_scores_store=store.GeneScores()
         
-        # Add some genes to the alignments set that are in the reactions database
-        # Associate these with 2 more bugs
-        genes=reactions_database.gene_list()
-        alignments_store.add(genes[0], 1, "Q3", 0.01, "bug1")
-        alignments_store.add(genes[1], 1, "Q1", 0.01, "bug4")
-        alignments_store.add(genes[2], 1, "Q2", 0.01, "bug5")
-        alignments_store.add(genes[3], 1, "Q1", 0.01, "bug1")       
+        # compute gene scores
+        alignments_store.convert_alignments_to_gene_scores(gene_scores_store)
         
-        # Redirect stdout
-        sys.stdout=open(os.devnull,"w")
+        # convert lengths to per kb
+        gene3_length=gene3_length/1000.0
         
-        # Filter hits not associated with genes in the reactions database
-        alignments_store.filter_hits(reactions_database)
-        
-        # Undo stdout redirect
-        sys.stdout=sys.__stdout__
-        
-        # Check the total bugs
-        self.assertEqual(alignments_store.count_bugs(),3)
-        
-    def test_Alignments_filter_hits_gene_count(self):
+        # gene3
+        hit4_score=math.exp(-eval4)
+        query3_sum=hit4_score
+        gene_score=hit4_score/query3_sum/gene3_length
+
+        self.assertEqual(gene_scores_store.get_score("bug1","gene3"),gene_score)
+
+    def test_Alignments_compute_gene_scores_single_gene_double_query(self):
         """
-        Test the filter hits function in the Alignments class with
-        a reactions database
-        
-        Test total number of genes
+        Test the compute_gene_scores function
+        Test one hit for gene with more than one hit per query
         """
-    
-        # Create a reactions database
-        reactions_database=store.ReactionsDatabase(cfg.reactions_file)
-    
+        
+        # create a set of hits
+        # bug, reference, reference_length, query, evalue = hit
+        
+        eval1=1e-4
+        eval2=3e-7
+        eval3=2e-10
+        eval4=2e-10
+        
+        gene1_length=2
+        gene2_length=3
+        gene3_length=4
+        
         # Create a set of alignments
         alignments_store=store.Alignments()
+        alignments_store.add("gene1",gene1_length,"query1",eval1,"bug1")
+        alignments_store.add("gene2",gene2_length,"query1",eval2,"bug1")
+        alignments_store.add("gene2",gene2_length,"query2",eval3,"bug1")
+        alignments_store.add("gene3",gene3_length,"query3",eval4,"bug1")
         
-        alignments_store.add("gene2", 1, "Q3", 0.01, "bug1")
-        alignments_store.add("gene1", 1, "Q1", 0.01, "bug2")
-        alignments_store.add("gene3", 1, "Q2", 0.01, "bug3")
-        alignments_store.add("gene1", 1, "Q1", 0.01, "bug1")
+        gene_scores_store=store.GeneScores()
         
-        # Add some genes to the alignments set that are in the reactions database
-        genes=reactions_database.gene_list()
-        alignments_store.add(genes[0], 1, "Q3", 0.01, "bug1")
-        alignments_store.add(genes[1], 1, "Q1", 0.01, "bug1")
-        alignments_store.add(genes[2], 1, "Q2", 0.01, "bug1")
-        alignments_store.add(genes[3], 1, "Q1", 0.01, "bug1")       
+        # compute gene scores
+        alignments_store.convert_alignments_to_gene_scores(gene_scores_store)
         
-        # Redirect stdout
-        sys.stdout=open(os.devnull,"w")
+        # convert lengths to per kb
+        gene1_length=gene1_length/1000.0
         
-        # Filter hits not associated with genes in the reactions database
-        alignments_store.filter_hits(reactions_database)
-        
-        # Undo stdout redirect
-        sys.stdout=sys.__stdout__
-        
-        # Check the total genes
-        self.assertEqual(alignments_store.count_genes(),4)
-        
-    def test_Alignments_filter_hits_bug_list(self):
+        # gene1
+        hit1_score=math.exp(-eval1)
+        hit2_score=math.exp(-eval2)
+        query1_sum=hit1_score+hit2_score
+        gene_score=hit1_score/query1_sum/gene1_length
+
+        self.assertEqual(gene_scores_store.get_score("bug1","gene1"),gene_score)
+
+    def test_Alignments_compute_gene_scores_double_gene_double_query(self):
         """
-        Test the filter hits function in the Alignments class with
-        a reactions database
-        
-        Test the bugs list
+        Test the compute_gene_scores function
+        Test two hits to gene with more than one hit per query
         """
-    
-        # Create a reactions database
-        reactions_database=store.ReactionsDatabase(cfg.reactions_file)
-    
+        
+        # create a set of hits
+        # bug, reference, reference_length, query, evalue = hit
+        
+        eval1=1e-4
+        eval2=3e-7
+        eval3=2e-10
+        eval4=2e-10
+        
+        gene1_length=2
+        gene2_length=3
+        gene3_length=4
+        
         # Create a set of alignments
         alignments_store=store.Alignments()
+        alignments_store.add("gene1",gene1_length,"query1",eval1,"bug1")
+        alignments_store.add("gene2",gene2_length,"query1",eval2,"bug1")
+        alignments_store.add("gene2",gene2_length,"query2",eval3,"bug1")
+        alignments_store.add("gene3",gene3_length,"query3",eval4,"bug1")
         
-        alignments_store.add("gene2", 1, "Q3", 0.01, "bug1")
-        alignments_store.add("gene1", 1, "Q1", 0.01, "bug2")
-        alignments_store.add("gene3", 1, "Q2", 0.01, "bug3")
-        alignments_store.add("gene1", 1, "Q1", 0.01, "bug1")
+        gene_scores_store=store.GeneScores()
         
-        # Add some genes to the alignments set that are in the reactions database
-        # Associate these with 2 more bugs
-        genes=reactions_database.gene_list()
-        alignments_store.add(genes[0], 1, "Q3", 0.01, "bug1")
-        alignments_store.add(genes[1], 1, "Q1", 0.01, "bug4")
-        alignments_store.add(genes[2], 1, "Q2", 0.01, "bug5")
-        alignments_store.add(genes[3], 1, "Q1", 0.01, "bug1")       
+        # compute gene scores
+        alignments_store.convert_alignments_to_gene_scores(gene_scores_store)
         
-        # Redirect stdout
-        sys.stdout=open(os.devnull,"w")
+        # gene1
+        hit1_score=math.exp(-eval1)
+        hit2_score=math.exp(-eval2)
+        query1_sum=hit1_score+hit2_score
         
-        # Filter hits not associated with genes in the reactions database
-        alignments_store.filter_hits(reactions_database)
+        # convert lengths to per kb
+        gene2_length=gene2_length/1000.0
         
-        # Undo stdout redirect
-        sys.stdout=sys.__stdout__
-        
-        # Check the bugs list
-        self.assertEqual(sorted(alignments_store.bug_list()),["bug1","bug4","bug5"])
-        
-    def test_Alignments_filter_hits_gene_count(self):
-        """
-        Test the filter hits function in the Alignments class with
-        a reactions database
-        
-        Test the gene list
-        """
-    
-        # Create a reactions database
-        reactions_database=store.ReactionsDatabase(cfg.reactions_file)
-    
-        # Create a set of alignments
-        alignments_store=store.Alignments()
-        
-        alignments_store.add("gene2", 1, "Q3", 0.01, "bug1")
-        alignments_store.add("gene1", 1, "Q1", 0.01, "bug2")
-        alignments_store.add("gene3", 1, "Q2", 0.01, "bug3")
-        alignments_store.add("gene1", 1, "Q1", 0.01, "bug1")
-        
-        # Add some genes to the alignments set that are in the reactions database
-        genes=reactions_database.gene_list()
-        alignments_store.add(genes[0], 1, "Q3", 0.01, "bug1")
-        alignments_store.add(genes[1], 1, "Q1", 0.01, "bug1")
-        alignments_store.add(genes[2], 1, "Q2", 0.01, "bug1")
-        alignments_store.add(genes[3], 1, "Q1", 0.01, "bug1")       
-        
-        # Redirect stdout
-        sys.stdout=open(os.devnull,"w")
-        
-        # Filter hits not associated with genes in the reactions database
-        alignments_store.filter_hits(reactions_database)
-        
-        # Undo stdout redirect
-        sys.stdout=sys.__stdout__
-        
-        # Check the gene list
-        self.assertEqual(sorted(alignments_store.gene_list()),sorted(genes[0:4])) 
+        # gene2
+        hit3_score=math.exp(-eval3)
+        query2_sum=hit3_score
+        gene_score=hit3_score/query2_sum/gene2_length + hit2_score/query1_sum/gene2_length
+
+        self.assertEqual(gene_scores_store.get_score("bug1","gene2"),gene_score)

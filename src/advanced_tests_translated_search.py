@@ -59,7 +59,7 @@ class TestAdvancedHumann2TranslatedSearchFunctions(unittest.TestCase):
         utils.remove_temp_file(unaligned_file_fasta)
         
         # check the evalues are unchanged
-        self.assertEqual(sorted(alignments.all_hits()), sorted(alignments_test.all_hits()))
+        self.assertEqual(sorted(alignments.get_hit_list()), sorted(alignments_test.get_hit_list()))
         
     def test_translated_search_unaligned_reads_rapsearch_log(self):
         """
@@ -97,9 +97,10 @@ class TestAdvancedHumann2TranslatedSearchFunctions(unittest.TestCase):
         utils.remove_temp_file(unaligned_file_fasta)
         
         # check the evalues are changed
-        hit1_evalue=sorted(alignments.all_hits())[0][-1]
-        hit1_evalue_test=sorted(alignments_test.all_hits())[0][-1]
-        self.assertEqual(math.pow(10.0,hit1_evalue),hit1_evalue_test)
+        hit1_evalue=sorted(alignments.get_hit_list())[0][-2]
+        hit1_evalue_test=sorted(alignments_test.get_hit_list())[0][-2]
+        self.assertAlmostEqual(math.pow(10.0,math.log(hit1_evalue)*-1),
+            math.log(hit1_evalue_test)*-1,places=7)
 
     def test_translated_search_unaligned_reads_rapsearch2_no_log(self):
         """
@@ -137,7 +138,7 @@ class TestAdvancedHumann2TranslatedSearchFunctions(unittest.TestCase):
         utils.remove_temp_file(unaligned_file_fasta)
         
         # check the evalues are unchanged
-        self.assertEqual(sorted(alignments.all_hits()), sorted(alignments_test.all_hits()))
+        self.assertEqual(sorted(alignments.get_hit_list()), sorted(alignments_test.get_hit_list()))
         
         
     def test_translated_search_unaligned_reads_annotations_reference(self):
@@ -204,12 +205,12 @@ class TestAdvancedHumann2TranslatedSearchFunctions(unittest.TestCase):
         utils.remove_temp_file(unaligned_file_fasta)       
 
         # there should be 4 hits identified
-        all_hits=alignments.all_hits()
+        all_hits=alignments.get_hit_list()
         self.assertEqual(len(all_hits),4)
         
         # check for set and default gene lengths
         for hit in all_hits:
-            bug, reference, length, query, evalue = hit
+            bug, reference, query, evalue, length = hit
             if reference == "UniRef50":
                 self.assertEqual(length,2000/1000.0)
             else:
