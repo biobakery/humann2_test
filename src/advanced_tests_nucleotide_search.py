@@ -164,11 +164,11 @@ class TestAdvancedHumann2NucleotideSearchFunctions(unittest.TestCase):
         
         # check for set and default gene lengths
         for hit in all_hits:
-            bug, reference, query, evalue, length = hit
+            bug, reference, query, evalue, length_normalization = hit
             if reference == "UniRef50":
-                self.assertEqual(length,2000/1000.0)
+                self.assertEqual(length_normalization,1/(2000/1000.0))
             else:
-                self.assertEqual(length,1000/1000.0)
+                self.assertEqual(length_normalization,1/(1000/1000.0))
 
     def test_nucleotide_search_unaligned_reads_output_blast_format(self):
         """

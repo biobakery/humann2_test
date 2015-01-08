@@ -210,10 +210,10 @@ class TestAdvancedHumann2TranslatedSearchFunctions(unittest.TestCase):
         
         # check for set and default gene lengths
         for hit in all_hits:
-            bug, reference, query, evalue, length = hit
+            bug, reference, query, evalue, length_normalization = hit
             if reference == "UniRef50":
-                self.assertEqual(length,2000/1000.0)
+                self.assertEqual(length_normalization,1/(2000/1000.0))
             else:
-                self.assertEqual(length,1000/1000.0)
+                self.assertEqual(length_normalization,1/(1000/1000.0))
 
 
