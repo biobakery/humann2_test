@@ -32,11 +32,11 @@ class TestAdvancedHumann2NucleotideSearchFunctions(unittest.TestCase):
         
         # create a set of alignments
         alignments=store.Alignments()
+        unaligned_reads_store=store.Reads()
         
         # read in the aligned and unaligned reads
-        [unaligned_reads_file_fasta, unaligned_reads_store, 
-            reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
-            cfg.sam_file_unaligned_reads, alignments, keep_sam=True) 
+        [unaligned_reads_file_fasta, reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
+            cfg.sam_file_unaligned_reads, alignments, unaligned_reads_store, keep_sam=True) 
         
         # check for fasta output file format
         file_format=utilities.determine_file_format(unaligned_reads_file_fasta)
@@ -56,11 +56,11 @@ class TestAdvancedHumann2NucleotideSearchFunctions(unittest.TestCase):
         
         # create a set of alignments
         alignments=store.Alignments()
+        unaligned_reads_store=store.Reads()
         
         # read in the aligned and unaligned reads
-        [unaligned_reads_file_fasta, unaligned_reads_store, 
-            reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
-            cfg.sam_file_unaligned_reads, alignments, keep_sam=True) 
+        [unaligned_reads_file_fasta, reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
+            cfg.sam_file_unaligned_reads, alignments, unaligned_reads_store, keep_sam=True) 
         
         # remove temp files
         utils.remove_temp_file(unaligned_reads_file_fasta)
@@ -79,11 +79,11 @@ class TestAdvancedHumann2NucleotideSearchFunctions(unittest.TestCase):
         
         # create a set of alignments
         alignments=store.Alignments()
+        unaligned_reads_store=store.Reads()
         
         # read in the aligned and unaligned reads
-        [unaligned_reads_file_fasta, unaligned_reads_store, 
-            reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
-            cfg.sam_file_unaligned_reads, alignments, keep_sam=True) 
+        [unaligned_reads_file_fasta, reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
+            cfg.sam_file_unaligned_reads, alignments, unaligned_reads_store, keep_sam=True) 
         
         # remove temp files
         utils.remove_temp_file(unaligned_reads_file_fasta)
@@ -101,11 +101,11 @@ class TestAdvancedHumann2NucleotideSearchFunctions(unittest.TestCase):
         
         # create a set of alignments
         alignments=store.Alignments()
+        unaligned_reads_store=store.Reads()
         
         # read in the aligned and unaligned reads
-        [unaligned_reads_file_fasta, unaligned_reads_store, 
-            reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
-            cfg.sam_file_annotations, alignments, keep_sam=True) 
+        [unaligned_reads_file_fasta, reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
+            cfg.sam_file_annotations, alignments, unaligned_reads_store, keep_sam=True) 
         
         # remove temp files
         utils.remove_temp_file(unaligned_reads_file_fasta)
@@ -125,11 +125,11 @@ class TestAdvancedHumann2NucleotideSearchFunctions(unittest.TestCase):
         
         # create a set of alignments
         alignments=store.Alignments()
+        unaligned_reads_store=store.Reads()
         
         # read in the aligned and unaligned reads
-        [unaligned_reads_file_fasta, unaligned_reads_store, 
-            reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
-            cfg.sam_file_annotations, alignments, keep_sam=True) 
+        [unaligned_reads_file_fasta, reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
+            cfg.sam_file_annotations, alignments, unaligned_reads_store, keep_sam=True) 
         
         # remove temp files
         utils.remove_temp_file(unaligned_reads_file_fasta)
@@ -148,11 +148,11 @@ class TestAdvancedHumann2NucleotideSearchFunctions(unittest.TestCase):
         
         # create a set of alignments
         alignments=store.Alignments()
+        unaligned_reads_store=store.Reads()
         
         # read in the aligned and unaligned reads
-        [unaligned_reads_file_fasta, unaligned_reads_store, 
-            reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
-            cfg.sam_file_annotations, alignments, keep_sam=True) 
+        [unaligned_reads_file_fasta, reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
+            cfg.sam_file_annotations, alignments, unaligned_reads_store, keep_sam=True) 
         
         # remove temp files
         utils.remove_temp_file(unaligned_reads_file_fasta)
@@ -179,13 +179,13 @@ class TestAdvancedHumann2NucleotideSearchFunctions(unittest.TestCase):
         
         # create a set of alignments
         alignments=store.Alignments()
+        unaligned_reads_store=store.Reads()
         
         config.file_basename="TEST"
         
         # read in the aligned and unaligned reads
-        [unaligned_reads_file_fasta, unaligned_reads_store, 
-            reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
-            cfg.sam_file_annotations, alignments, keep_sam=True) 
+        [unaligned_reads_file_fasta, reduced_aligned_reads_file] = nucleotide_search.unaligned_reads(
+            cfg.sam_file_annotations, alignments, unaligned_reads_store, keep_sam=True) 
         
         # test file is of the blastm8 format
         file_format=utilities.determine_file_format(reduced_aligned_reads_file)
