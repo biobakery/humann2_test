@@ -467,7 +467,30 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         alignments_store.add("gene1", 1, "Q1", 0.01, "bug1")
         
         # check gene list
-        self.assertEqual(sorted(alignments_store.gene_list()),["gene1","gene2","gene3"])         
+        self.assertEqual(sorted(alignments_store.gene_list()),["gene1","gene2","gene3"])        
+        
+    def test_Alignments_process_chocophlan_length(self):
+        """
+        Test the process_chocophlan_length with standard length format
+        """
+        
+        alignments_store=store.Alignments()
+        
+        length=alignments_store.process_chocophlan_length("1-100","gene")
+        
+        self.assertEqual(length, 100)
+        
+    def test_Alignments_process_chocophlan_length_multiple(self):
+        """
+        Test the process_chocophlan_length with multiple lengths
+        Test with one length on the reverse strand
+        """
+        
+        alignments_store=store.Alignments()
+        
+        length=alignments_store.process_chocophlan_length("c:100-1,1-100","gene")
+        
+        self.assertEqual(length, 200) 
 
     def test_GeneScores_add(self):
         """
@@ -591,4 +614,5 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         # Test the scores for all bugs and genes
         for bug in cfg.genetable_file_bug_scores:
             self.assertDictEqual(cfg.genetable_file_bug_scores[bug],gene_scores.scores_for_bug(bug))
+            
         

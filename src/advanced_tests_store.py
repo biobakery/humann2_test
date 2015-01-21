@@ -141,3 +141,89 @@ class TestAdvancedHumann2UtilitiesFunctions(unittest.TestCase):
         gene_score=hit3_score/query2_sum/gene2_length + hit2_score/query1_sum/gene2_length
 
         self.assertEqual(gene_scores_store.get_score("bug1","gene2"),gene_score)
+        
+    def test_Alignments_id_mapping_all_gene_list(self):
+        """
+        Test the store_id_mapping function
+        Test the add_annotated and process_reference_annotation with id mapping
+        Test the genes are mapped correctly
+        """
+        
+        alignments_store=store.Alignments()
+        
+        # load in the id_mapping file
+        alignments_store.store_id_mapping(cfg.id_mapping_file)
+        
+        # store some alignments
+        alignments_store.add_annotated("query1",1,"ref1")
+        alignments_store.add_annotated("query2",1,"ref2")
+        alignments_store.add_annotated("query3",1,"ref3")
+        
+        # test the genes are correct
+        self.assertEqual(sorted(alignments_store.gene_list()),sorted(["gene1","gene2","gene3"]))
+        
+    def test_Alignments_id_mapping_all_bug_list(self):
+        """
+        Test the store_id_mapping function
+        Test the add_annotated and process_reference_annotation with id mapping
+        Test the bugs are mapped correctly
+        """
+        
+        alignments_store=store.Alignments()
+        
+        # load in the id_mapping file
+        alignments_store.store_id_mapping(cfg.id_mapping_file)
+        
+        # store some alignments
+        alignments_store.add_annotated("query1",1,"ref1")
+        alignments_store.add_annotated("query2",1,"ref2")
+        alignments_store.add_annotated("query3",1,"ref3")
+        
+        # test the bugs are correct
+        self.assertEqual(sorted(alignments_store.bug_list()),sorted(["bug3","unclassified"]))
+        
+    def test_Alignments_id_mapping_all_hits(self):
+        """
+        Test the store_id_mapping function
+        Test the add_annotated and process_reference_annotation with id mapping
+        Test the lengths are mapped correctly
+        """
+        
+        alignments_store=store.Alignments()
+        
+        # load in the id_mapping file
+        alignments_store.store_id_mapping(cfg.id_mapping_file)
+        
+        # store some alignments
+        alignments_store.add_annotated("query1",1,"ref1")
+        alignments_store.add_annotated("query2",1,"ref2")
+        alignments_store.add_annotated("query3",1,"ref3")
+        
+        # test the lengths are correct
+        stored_lengths=[item[-1] for item in alignments_store.get_hit_list()]
+        self.assertEqual(sorted(stored_lengths),sorted([1.0/1000,10.0/1000,1.0]))
+        
+    def test_Alignments_id_mapping_half_hits(self):
+        """
+        Test the store_id_mapping function
+        Test the add_annotated and process_reference_annotation with id mapping
+        Test the lengths are mapped correctly with only some references included
+        in those provided for id mapping
+        """
+        
+        alignments_store=store.Alignments()
+        
+        # load in the id_mapping file
+        alignments_store.store_id_mapping(cfg.id_mapping_file)
+        
+        # store some alignments
+        alignments_store.add_annotated("query1",1,"ref1")
+        alignments_store.add_annotated("query2",1,"ref2")
+        alignments_store.add_annotated("query3",1,"ref1|100")
+        alignments_store.add_annotated("query3",1,"200|ref2")
+        
+        # test the lengths are correct
+        stored_lengths=[item[-1] for item in alignments_store.get_hit_list()]
+        self.assertEqual(sorted(stored_lengths),sorted([1.0/1000,100.0/1000,
+            200.0/1000.0,1.0]))
+        

@@ -60,3 +60,5 @@ rapsearch2_output_file_with_header=os.path.join(data_folder, "rapsearch2_output_
 rapsearch2_output_file_without_header=os.path.join(data_folder, "rapsearch2_output_without_header.m8")
 rapsearch2_output_file_with_header_no_log=os.path.join(data_folder, "rapsearch2_output_with_header_no_log.m8")
 
+id_mapping_file=os.path.join(data_folder, "id_mapping.tsv")
+
