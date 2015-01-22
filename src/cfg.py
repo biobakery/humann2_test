@@ -61,4 +61,20 @@ rapsearch2_output_file_without_header=os.path.join(data_folder, "rapsearch2_outp
 rapsearch2_output_file_with_header_no_log=os.path.join(data_folder, "rapsearch2_output_with_header_no_log.m8")
 
 id_mapping_file=os.path.join(data_folder, "id_mapping.tsv")
+id_mapping_gene_table_file=os.path.join(data_folder, "id_mapping_gene_table.tsv")
+
+genetable_file_bug_scores_id_mapping={
+    "bug1": {"gene1": 6.80272108844 },
+    "s__Parabacteroides_merdae" : { "gene2" : 5.74712643678 },
+    "s__Bacteroides_uniformis" : { "UniRef50_Q5L8C7": 5.64971751412 },
+    "s__Faecalibacterium_prausnitzii" : { "UniRef50_R7EH44" : 5.64971751412 },
+    "all" : {
+        "gene1" : 6.80272108844,
+        "gene2" : 5.74712643678,
+        "gene5" : 6.80272108844,
+        "UniRef50_A7ALT1" : 5.74712643678,
+        "UniRef50_Q5L8C7" : 5.64971751412,
+        "UniRef50_R7EH44" : 5.64971751412,
+        "UniRef50_B0NLN0" : 5.26315789474 }
+    }
 

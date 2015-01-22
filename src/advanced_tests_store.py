@@ -152,7 +152,7 @@ class TestAdvancedHumann2UtilitiesFunctions(unittest.TestCase):
         alignments_store=store.Alignments()
         
         # load in the id_mapping file
-        alignments_store.store_id_mapping(cfg.id_mapping_file)
+        alignments_store.process_id_mapping(cfg.id_mapping_file)
         
         # store some alignments
         alignments_store.add_annotated("query1",1,"ref1")
@@ -172,7 +172,7 @@ class TestAdvancedHumann2UtilitiesFunctions(unittest.TestCase):
         alignments_store=store.Alignments()
         
         # load in the id_mapping file
-        alignments_store.store_id_mapping(cfg.id_mapping_file)
+        alignments_store.process_id_mapping(cfg.id_mapping_file)
         
         # store some alignments
         alignments_store.add_annotated("query1",1,"ref1")
@@ -192,7 +192,7 @@ class TestAdvancedHumann2UtilitiesFunctions(unittest.TestCase):
         alignments_store=store.Alignments()
         
         # load in the id_mapping file
-        alignments_store.store_id_mapping(cfg.id_mapping_file)
+        alignments_store.process_id_mapping(cfg.id_mapping_file)
         
         # store some alignments
         alignments_store.add_annotated("query1",1,"ref1")
@@ -214,7 +214,7 @@ class TestAdvancedHumann2UtilitiesFunctions(unittest.TestCase):
         alignments_store=store.Alignments()
         
         # load in the id_mapping file
-        alignments_store.store_id_mapping(cfg.id_mapping_file)
+        alignments_store.process_id_mapping(cfg.id_mapping_file)
         
         # store some alignments
         alignments_store.add_annotated("query1",1,"ref1")
@@ -227,3 +227,35 @@ class TestAdvancedHumann2UtilitiesFunctions(unittest.TestCase):
         self.assertEqual(sorted(stored_lengths),sorted([1.0/1000,100.0/1000,
             200.0/1000.0,1.0]))
         
+    def test_GeneScores_add_from_file_id_mapping_bug_list(self):
+        """
+        GeneScores class: Test add_from_file bug list with id mapping
+        """
+        
+        gene_scores=store.GeneScores()
+        
+        gene_scores.add_from_file(cfg.genetable_file, 
+            id_mapping_file=cfg.id_mapping_gene_table_file)
+        
+        # Test the bug list is as expected
+        self.assertEqual(sorted(cfg.genetable_file_bug_scores_id_mapping.keys()),
+            sorted(gene_scores.bug_list()))
+        
+    def test_GeneScores_add_from_file_id_mapping_gene_list(self):
+        """
+        GeneScores class: Test add_from_file gene list with id mapping
+        """
+        
+        gene_scores=store.GeneScores()
+        
+        gene_scores.add_from_file(cfg.genetable_file,
+            id_mapping_file=cfg.id_mapping_gene_table_file)
+        
+        # Create a list of all of the genes in the table
+        genes={}
+        for bug in cfg.genetable_file_bug_scores_id_mapping:
+            for gene in cfg.genetable_file_bug_scores_id_mapping[bug]:
+                genes[gene]=1
+        
+        # Test the gene list is as expected
+        self.assertEqual(sorted(genes.keys()),sorted(gene_scores.gene_list()))
