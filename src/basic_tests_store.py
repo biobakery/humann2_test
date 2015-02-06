@@ -341,17 +341,17 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         Test and odd number of values and different reactions
         """
         
-        pathways_and_reactions=store.PathwaysAndReactions("bug")
+        pathways_and_reactions=store.PathwaysAndReactions()
         
         # add scores all for same pathway and different reaction
-        pathways_and_reactions.add("P1","R1",1)
-        pathways_and_reactions.add("P1","R2",2)        
-        pathways_and_reactions.add("P1","R3",3)
-        pathways_and_reactions.add("P1","R4",4)
-        pathways_and_reactions.add("P1","R5",5)  
+        pathways_and_reactions.add("bug","P1","R1",1)
+        pathways_and_reactions.add("bug","P1","R2",2)        
+        pathways_and_reactions.add("bug","P1","R3",3)
+        pathways_and_reactions.add("bug","P1","R4",4)
+        pathways_and_reactions.add("bug","P1","R5",5)  
         
         # test median score for odd number of values
-        self.assertEqual(pathways_and_reactions.median_score(),3)
+        self.assertEqual(pathways_and_reactions.median_score("bug"),3)
         
     def test_PathwaysAndReactions_median_score_even_number_vary_reactions(self):
         """
@@ -359,16 +359,16 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         Test an even number of values and different reactions
         """
         
-        pathways_and_reactions=store.PathwaysAndReactions("bug")
+        pathways_and_reactions=store.PathwaysAndReactions()
         
         # add scores all for same pathway and  different reaction
-        pathways_and_reactions.add("P1","R1",1)
-        pathways_and_reactions.add("P1","R2",2)        
-        pathways_and_reactions.add("P1","R3",3)
-        pathways_and_reactions.add("P1","R4",4) 
+        pathways_and_reactions.add("bug","P1","R1",1)
+        pathways_and_reactions.add("bug","P1","R2",2)        
+        pathways_and_reactions.add("bug","P1","R3",3)
+        pathways_and_reactions.add("bug","P1","R4",4) 
         
         # test median score for an even number of values
-        self.assertEqual(pathways_and_reactions.median_score(),2.5)    
+        self.assertEqual(pathways_and_reactions.median_score("bug"),2.5)    
         
     def test_PathwaysAndReactions_median_score_odd_number_vary_pathways(self):
         """
@@ -376,17 +376,17 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         Test an odd number of values and different pathways
         """
         
-        pathways_and_reactions=store.PathwaysAndReactions("bug")        
+        pathways_and_reactions=store.PathwaysAndReactions()        
         
         # add scores all for same pathway and reaction
-        pathways_and_reactions.add("P1","R1",1)
-        pathways_and_reactions.add("P2","R1",2)        
-        pathways_and_reactions.add("P3","R1",3)
-        pathways_and_reactions.add("P4","R1",4)
-        pathways_and_reactions.add("P5","R1",5)  
+        pathways_and_reactions.add("bug","P1","R1",1)
+        pathways_and_reactions.add("bug","P2","R1",2)        
+        pathways_and_reactions.add("bug","P3","R1",3)
+        pathways_and_reactions.add("bug","P4","R1",4)
+        pathways_and_reactions.add("bug","P5","R1",5)  
         
         # test median score for odd number of values
-        self.assertEqual(pathways_and_reactions.median_score(),3)
+        self.assertEqual(pathways_and_reactions.median_score("bug"),3)
         
     def test_PathwaysAndReactions_median_score_even_number_vary_pathways(self):
         """
@@ -394,16 +394,16 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         Test an even number of values and different pathways
         """
         
-        pathways_and_reactions=store.PathwaysAndReactions("bug")
+        pathways_and_reactions=store.PathwaysAndReactions()
         
         # add scores all for same pathway and reaction
-        pathways_and_reactions.add("P1","R1",1)
-        pathways_and_reactions.add("P2","R2",2)        
-        pathways_and_reactions.add("P3","R3",3)
-        pathways_and_reactions.add("P4","R4",4) 
+        pathways_and_reactions.add("bug","P1","R1",1)
+        pathways_and_reactions.add("bug","P2","R2",2)        
+        pathways_and_reactions.add("bug","P3","R3",3)
+        pathways_and_reactions.add("bug","P4","R4",4) 
         
         # test median score for an even number of values
-        self.assertEqual(pathways_and_reactions.median_score(),2.5)         
+        self.assertEqual(pathways_and_reactions.median_score("bug"),2.5)         
         
     def test_Alignments_add_bug_count(self):
         """
