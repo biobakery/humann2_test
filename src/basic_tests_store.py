@@ -8,7 +8,6 @@ import cfg
 import utils
 
 import store
-import config
 
 class TestHumann2StoreFunctions(unittest.TestCase):
     """
@@ -158,9 +157,6 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         Test for the reactions list
         """
         
-        config.pathway_identifier="PWY"
-        config.pathways_recursion=True
-        
         pathways_database_store=store.PathwaysDatabase(cfg.pathways_file, True)
         pathways_database_flat_store=store.PathwaysDatabase(cfg.pathways_flat_file, True)
         
@@ -178,9 +174,6 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         Pathways database class: Test the storing of a recursive set of pathways
         Test for the number of reactions 
         """
-        
-        config.pathway_identifier="PWY"
-        config.pathways_recursion=True
         
         pathways_database_store=store.PathwaysDatabase(cfg.pathways_file, True)
         pathways_database_flat_store=store.PathwaysDatabase(cfg.pathways_flat_file, True)
@@ -204,9 +197,6 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         Pathways database class: Test the storing of a recursive set of pathways
         Test for the reactions ids 
         """
-        
-        config.pathway_identifier="PWY"
-        config.pathways_recursion=True
         
         pathways_database_store=store.PathwaysDatabase(cfg.pathways_file, True)
         pathways_database_flat_store=store.PathwaysDatabase(cfg.pathways_flat_file, True)
@@ -280,9 +270,6 @@ class TestHumann2StoreFunctions(unittest.TestCase):
         Pathways database class: Test the printing of a flat file from a recursive file
         Test the reactions list
         """
-        
-        config.pathway_identifier="PWY"
-        config.pathways_recursion=True
  
         pathways_database_store=store.PathwaysDatabase(cfg.pathways_file, True)
         pathways_database_flat_store=store.PathwaysDatabase(cfg.pathways_flat_file, True)       
