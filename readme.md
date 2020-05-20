@@ -1,5 +1,3 @@
-[TOC]
-
 # HUMAnN2 Test #
 
 The HUMAnN2 Test repository contains software to test HUMAnN2. 
@@ -8,11 +6,11 @@ The HUMAnN2 Test repository contains software to test HUMAnN2.
 
 ### Software ###
 
-Download and Install [HUMAnN2](https://bitbucket.org/biobakery/humann2/)
+Download and Install [HUMAnN2](https://github.com/biobakery/humann)
 
 All HUMAnN2 software requirements are also required for HUMAnN2 Test:
 
-1. [MetaPhlAn](https://bitbucket.org/biobakery/metaphlan2/)
+1. [MetaPhlAn](https://github.com/biobakery/MetaPhlAn)
 1. [bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/) (version >= 2.1)
 1. [rapsearch2](http://omics.informatics.indiana.edu/mg/RAPSearch2/)
 1. [Python](http://www.python.org/) (version >= 2.7)
@@ -25,12 +23,12 @@ All of these requirements should be installed in a location in your $PATH.
 ## Installation ##
 HUMAnN2 Test can be downloaded in two ways:
 
-* [Download](https://bitbucket.org/biobakery/humann2_test/downloads) a compressed set of files.
+* [Download](https://github.com/biobakery/humann2_test/archive/master.zip) a compressed set of files.
 * Create a clone of the repository on your computer with the command: 
 	
-	``hg clone https://bitbucket.org/biobakery/humann2_test ``
+	``git clone https://github.com/biobakery/humann2_test.git ``
 
-Note: Creating a clone of the repository requires [Mercurial](http://mercurial.selenic.com/) to be installed. Once the repository has been cloned upgrading to the latest release of HUMAnN2 Test is simple. Just type ``hg -u pull`` from within the repository which will download the latest release.
+Note: Creating a clone of the repository requires [Git](https://git-scm.com/) to be installed. Once the repository has been cloned upgrading to the latest release of HUMAnN2 Test is simple. Just type ``hg -u pull`` from within the repository which will download the latest release.
 
 There are no additional steps to install HUMAnN2 Test.
 
